@@ -5,12 +5,15 @@ from __future__ import absolute_import, unicode_literals
 
 import requests
 
+from .error import GyazoError
 from .image import Image, ImageList
 
 
 class Api(object):
     def __init__(self, client_id=None, client_secret=None, access_token=None,
                  api_url=None, upload_url=None):
+        """A Python interface for Gyazo API"""
+
         if api_url is None:
             self.api_url = 'https://api.gyazo.com'
         else:
@@ -26,6 +29,7 @@ class Api(object):
         self._access_token = access_token
 
     def get_list(self, page=1, per_page=20):
+        """Return a list of user's saved images"""
         url = self.api_url + '/api/images'
         parameters = {}
         parameters['page'] = page
@@ -38,20 +42,26 @@ class Api(object):
 
     def _request_url(self, url, method, data=None):
         headers = {'Authorization': 'Bearer ' + self._access_token}
+
         if method == 'get':
             try:
                 return requests.get(url, data=data, headers=headers)
-            except:
-                raise Exception()
+            except requests.RequestException as e:
+                raise GyazoError(str(e))
 
         # Unsupported method
         return None
 
     def _parse_and_check(self, data):
+        data_dict = {}
         try:
             headers = data.headers
-            data = data.json()
-        except:
-            raise Exception()
+            data_dict = data.json()
+        except Exception as e:
+            raise e
 
-        return (headers, data,)
+        if data.status_code >= 400:
+            message = data_dict.get('message', 'Error')
+            raise GyazoError(message)
+
+        return (headers, data_dict,)
