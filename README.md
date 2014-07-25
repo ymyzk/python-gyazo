@@ -5,6 +5,7 @@ A Python wrapper for Gyazo API.
 
 ## Requirements
 * Python 2.7
+* Python 3.4
 
 ## Installation
 `pip install python-gyazo`
@@ -29,12 +30,19 @@ image = images[0]
 print("Image ID: " + image.image_id)
 print("URL: " + image.url)
 
+# Download image
+if image.url:
+    with open(image.filename, 'wb') as f:
+        f.write(image.download())
+
+# Upload image
+with open('sample.png', 'rb') as f:
+    image = api.upload_image(f)
+    print(image.to_json())
+
 # Delete image
 api.delete_image('IMAGE_ID')
 ```
-
-## Known issues
-* Uploading images is not supported.
 
 ## Links
 * [Gyazo API](https://gyazo.com/api/docs)

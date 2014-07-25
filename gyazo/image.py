@@ -5,6 +5,7 @@ from __future__ import absolute_import, unicode_literals
 import json
 
 import dateutil.parser
+import requests
 
 
 class Image(object):
@@ -20,6 +21,18 @@ class Image(object):
         }
         for key in defaults:
             setattr(self, key, kwargs.get(key, defaults[key]))
+
+    @property
+    def filename(self):
+        if self.url:
+            return self.url.split('/')[-1]
+        return None
+
+    @property
+    def thumb_filename(self):
+        if self.thumb_url:
+            return self.thumb_url.split('/')[-1]
+        return None
 
     def to_json(self):
         return json.dumps(self.to_dict(), sort_keys=True)
@@ -44,6 +57,22 @@ class Image(object):
             data['url'] = self.url
 
         return data
+
+    def download(self):
+        if self.url:
+            try:
+                return requests.get(self.url).content
+            except requests.RequestException as e:
+                raise GyazoError(str(e))
+        return None
+
+    def download_thumb(self):
+        if self.thumb_url:
+            try:
+                return requests.get(self.thumb_url).content
+            except requests.RequestException as e:
+                raise GyazoError(str(e))
+        return None
 
     def __str__(self):
         return self.to_json()
