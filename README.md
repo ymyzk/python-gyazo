@@ -1,4 +1,6 @@
 # python-gyazo
+[![PyPI version](https://badge.fury.io/py/python-gyazo.svg)](http://badge.fury.io/py/python-gyazo)
+
 A Python wrapper for Gyazo API.
 
 ## Requirements
