@@ -40,19 +40,36 @@ class Api(object):
         images.set_from_headers(headers)
         return images
 
+    def upload_image(self, image_file):
+        """Upload an image"""
+        url = self.upload_url + '/api/upload'
+        files = {}
+        files['imagedata'] = image_file
+        response = self._request_url(url, 'post', files=files)
+        headers, result = self._parse_and_check(response)
+        image = Image.from_dict(result)
+        return image
+
     def delete_image(self, image_id):
         """Delete an image"""
         url = self.api_url + '/api/images/' + image_id
         response = self._request_url(url, 'delete')
         headers, result = self._parse_and_check(response)
-        print(result)
+        image = Image.from_dict(result)
+        return image
 
-    def _request_url(self, url, method, data=None):
+    def _request_url(self, url, method, data=None, files=None):
         headers = {'Authorization': 'Bearer ' + self._access_token}
 
         if method == 'get':
             try:
                 return requests.get(url, data=data, headers=headers)
+            except requests.RequestException as e:
+                raise GyazoError(str(e))
+        elif method == 'post':
+            try:
+                return requests.post(url, data=data, files=files,
+                                     headers=headers)
             except requests.RequestException as e:
                 raise GyazoError(str(e))
         elif method == 'delete':
