@@ -10,13 +10,13 @@ import dateutil.parser
 class Image(object):
     def __init__(self, **kwargs):
         defaults = {
-                'created_at': None,
-                'image_id': None,
-                'permalink_url': None,
-                'star': None,
-                'thumb_url': None,
-                'type': None,
-                'url': None
+            'created_at': None,
+            'image_id': None,
+            'permalink_url': None,
+            'star': None,
+            'thumb_url': None,
+            'type': None,
+            'url': None
         }
         for key in defaults:
             setattr(self, key, kwargs.get(key, defaults[key]))
@@ -66,11 +66,11 @@ class Image(object):
 class ImageList(object):
     def __init__(self, **kwargs):
         defaults = {
-                'total_count': None,
-                'current_page': None,
-                'per_page': None,
-                'user_type': None,
-                'images': []
+            'total_count': None,
+            'current_page': None,
+            'per_page': None,
+            'user_type': None,
+            'images': []
         }
         for key in defaults:
             setattr(self, key, kwargs.get(key, defaults[key]))
@@ -80,6 +80,15 @@ class ImageList(object):
 
     def __getitem__(self, key):
         return self.images[key]
+
+    def __setitem__(self, key, value):
+        self.images[key] = value
+
+    def __delitem__(self, key):
+        del self.images[key]
+
+    def __iter__(self):
+        return self.images.__iter__()
 
     def set_from_headers(self, headers):
         self.total_count = headers.get('x-total-count', None)

@@ -28,7 +28,7 @@ class Api(object):
         self._client_secret = client_secret
         self._access_token = access_token
 
-    def get_list(self, page=1, per_page=20):
+    def get_image_list(self, page=1, per_page=20):
         """Return a list of user's saved images"""
         url = self.api_url + '/api/images'
         parameters = {}
