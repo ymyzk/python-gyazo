@@ -40,12 +40,24 @@ class Api(object):
         images.set_from_headers(headers)
         return images
 
+    def delete_image(self, image_id):
+        """Delete an image"""
+        url = self.api_url + '/api/images/' + image_id
+        response = self._request_url(url, 'delete')
+        headers, result = self._parse_and_check(response)
+        print(result)
+
     def _request_url(self, url, method, data=None):
         headers = {'Authorization': 'Bearer ' + self._access_token}
 
         if method == 'get':
             try:
                 return requests.get(url, data=data, headers=headers)
+            except requests.RequestException as e:
+                raise GyazoError(str(e))
+        elif method == 'delete':
+            try:
+                return requests.delete(url, headers=headers)
             except requests.RequestException as e:
                 raise GyazoError(str(e))
 
