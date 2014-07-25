@@ -5,6 +5,7 @@ A Python wrapper for Gyazo API.
 
 ## Requirements
 * Python 2.7
+* Python 3.4
 
 ## Installation
 `pip install python-gyazo`
