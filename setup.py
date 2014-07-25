@@ -15,14 +15,18 @@ setup(name='python-gyazo',
       packages=['gyazo'],
       test_suite='tests',
       install_requires=[
-          'requests==2.3.0',
-          'python-dateutil==2.2'
+          'requests>=2.3.0',
+          'python-dateutil>=2.2'
       ],
       classifiers=[
-          'Development Status :: 2 - Pre-Alpha',
+          'Development Status :: 3 - Alpha',
+          'Intended Audience :: Developers',
+          'Operating System :: OS Independent',
           'License :: OSI Approved :: MIT License',
           'Programming Language :: Python',
           'Programming Language :: Python :: 2',
           'Programming Language :: Python :: 2.7',
+          'Topic :: Internet',
+          'Topic :: Software Development :: Libraries :: Python Modules'
       ]
       )
