@@ -30,6 +30,11 @@ image = images[0]
 print("Image ID: " + image.image_id)
 print("URL: " + image.url)
 
+# Download image
+if image.url:
+    with open(image.filename, 'bw') as f:
+        f.write(image.download())
+
 # Delete image
 api.delete_image('IMAGE_ID')
 ```
