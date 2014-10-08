@@ -7,20 +7,18 @@ import json
 import dateutil.parser
 import requests
 
+from gyazo.error import GyazoError
+
 
 class Image(object):
     def __init__(self, **kwargs):
-        defaults = {
-            'created_at': None,
-            'image_id': None,
-            'permalink_url': None,
-            'star': None,
-            'thumb_url': None,
-            'type': None,
-            'url': None
-        }
-        for key in defaults:
-            setattr(self, key, kwargs.get(key, defaults[key]))
+        self.created_at = kwargs.get('created_at', None)
+        self.image_id = kwargs.get('image_id', None)
+        self.permalink_url = kwargs.get('permalink_url', None)
+        self.star = kwargs.get('star', None)
+        self.thumb_url = kwargs.get('thumb_url', None)
+        self.type = kwargs.get('type', None)
+        self.url = kwargs.get('url', None)
 
     @property
     def filename(self):
@@ -94,15 +92,11 @@ class Image(object):
 
 class ImageList(object):
     def __init__(self, **kwargs):
-        defaults = {
-            'total_count': None,
-            'current_page': None,
-            'per_page': None,
-            'user_type': None,
-            'images': []
-        }
-        for key in defaults:
-            setattr(self, key, kwargs.get(key, defaults[key]))
+        self.total_count = kwargs.get('total_count', None)
+        self.current_page = kwargs.get('current_page', None)
+        self.per_page = kwargs.get('per_page', None)
+        self.user_type = kwargs.get('user_type', None)
+        self.images = kwargs.get('images', [])
 
     def __len__(self):
         return len(self.images)
