@@ -31,20 +31,22 @@ class Api(object):
     def get_image_list(self, page=1, per_page=20):
         """Return a list of user's saved images"""
         url = self.api_url + '/api/images'
-        parameters = {}
-        parameters['page'] = page
-        parameters['per_page'] = per_page
+        parameters = {
+            'page': page,
+            'per_page': per_page
+        }
         response = self._request_url(url, 'get', parameters)
         headers, result = self._parse_and_check(response)
         images = ImageList.from_list(result)
-        images.set_from_headers(headers)
+        images.set_attributes_from_headers(headers)
         return images
 
     def upload_image(self, image_file):
         """Upload an image"""
         url = self.upload_url + '/api/upload'
-        files = {}
-        files['imagedata'] = image_file
+        files = {
+            'imagedata': image_file
+        }
         response = self._request_url(url, 'post', files=files)
         headers, result = self._parse_and_check(response)
         image = Image.from_dict(result)
@@ -59,6 +61,13 @@ class Api(object):
         return image
 
     def _request_url(self, url, method, data=None, files=None):
+        """Send HTTP request
+
+        :param url: URL
+        :type url: str or unicode
+        :param method: HTTP method (get, post or delete)
+        :type method: str or unicode
+        """
         headers = {'Authorization': 'Bearer ' + self._access_token}
 
         if method == 'get':
@@ -82,15 +91,14 @@ class Api(object):
         return None
 
     def _parse_and_check(self, data):
-        data_dict = {}
         try:
             headers = data.headers
-            data_dict = data.json()
+            json_data = data.json()
         except Exception as e:
             raise e
 
         if data.status_code >= 400:
-            message = data_dict.get('message', 'Error')
+            message = json_data.get('message', 'Error')
             raise GyazoError(message)
 
-        return (headers, data_dict,)
+        return headers, json_data

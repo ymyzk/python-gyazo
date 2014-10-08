@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import absolute_import, division, unicode_literals
 import json
+import math
 
 import dateutil.parser
 import requests
 
-from gyazo.error import GyazoError
+from .error import GyazoError
 
 
 class Image(object):
@@ -113,7 +114,13 @@ class ImageList(object):
     def __iter__(self):
         return self.images.__iter__()
 
-    def set_from_headers(self, headers):
+    def has_next_page(self):
+        return self.current_page < math.ceil(self.total_count / self.per_page)
+
+    def has_previous_page(self):
+        return 0 < self.current_page
+
+    def set_attributes_from_headers(self, headers):
         self.total_count = headers.get('x-total-count', None)
         self.current_page = headers.get('x-current-page', None)
         self.per_page = headers.get('x-per-page', None)
