@@ -1,0 +1,15 @@
+language: python
+python:
+    - "2.7"
+    - "3.2"
+    - "3.3"
+    - "3.4"
+    - "pypy"
+    - "pypy3"
+install:
+    - pip install .
+    - pip install coveralls
+script:
+    - coverage run setup.py test
+after_success:
+    - coveralls
