@@ -8,5 +8,8 @@ python:
     - "pypy3"
 install:
     - pip install .
+    - pip install coveralls
 script:
-    - python setup.py test
+    - coverage run setup.py test
+after_success:
+    - coveralls
