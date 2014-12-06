@@ -7,7 +7,7 @@ except ImportError:
 
 
 __author__ = 'Yusuke Miyazaki <miyazaki.dev@gmail.com>'
-__version__ = '0.3.0'
+__version__ = '0.3.1'
 
 requires = [
     'requests>=2.4.0',
