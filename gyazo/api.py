@@ -88,6 +88,11 @@ class Api(object):
         """
         headers = {'Authorization': 'Bearer ' + self._access_token}
 
+        if data is None:
+            data = {}
+
+        data['access_token'] = self._access_token
+
         if method == 'get':
             try:
                 return requests.get(url, data=data, headers=headers)
