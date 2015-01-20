@@ -121,6 +121,10 @@ class ImageList(object):
     def __iter__(self):
         return self.images.__iter__()
 
+    @property
+    def num_pages(self):
+        return math.ceil(self.total_count / self.per_page)
+
     def has_next_page(self):
         return self.current_page < math.ceil(self.total_count / self.per_page)
 

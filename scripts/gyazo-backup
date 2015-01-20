@@ -8,6 +8,7 @@ import shutil
 import sys
 
 from jinja2 import Environment, FileSystemLoader
+from progress.bar import Bar
 
 import gyazo
 
@@ -42,17 +43,22 @@ def create_dest_dir(directory):
 
 def download_image_list(api):
     images = []
+    bar = Bar('List  ')
     i = 1
     while 1:
         _images = api.get_image_list(page=i, per_page=100)
         images += _images
+        bar.max = _images.num_pages
+        bar.next()
         if not _images.has_next_page():
             break
         i += 1
+    bar.finish()
     return images
 
 
 def download_images(images, dest_dir):
+    bar = Bar('Images', max=len(images))
     for image in images:
         if image.thumb_filename is not None:
             thumb_file = dest_dir + 'thumbnails/' + image.thumb_filename
@@ -64,6 +70,8 @@ def download_images(images, dest_dir):
             if not path.exists(image_file):
                 with open(image_file, 'wb') as f:
                     f.write(image.download())
+        bar.next()
+    bar.finish()
 
 
 def export_html(images, dest_dir):

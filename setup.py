@@ -11,6 +11,7 @@ __version__ = '0.3.1'
 
 requires = [
     'Jinja2>=2.7.0',
+    'progress>=1.2',
     'python-dateutil>=2.4',
     'requests>=2.5.0'
 ]
