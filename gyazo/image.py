@@ -6,6 +6,7 @@ import json
 import math
 
 import dateutil.parser
+import dateutil.tz
 import requests
 
 from .error import GyazoError
@@ -31,6 +32,12 @@ class Image(object):
     def thumb_filename(self):
         if self.thumb_url:
             return self.thumb_url.split('/')[-1]
+        return None
+
+    @property
+    def local_created_at(self):
+        if self.created_at:
+            return self.created_at.astimezone(dateutil.tz.tzlocal())
         return None
 
     def to_json(self):
