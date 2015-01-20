@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Python-Gyazo Backup</title>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+  <div class="container">
+    <h1>Python-Gyazo Backup</h1>
+    <div class="js-masonry masonry" data-masonry-options='{"columnWidth": 200, "itemSelector": ".image", "gutter": 20, "isFitWidth": true}'>
+      {% for image in images %}
+      <div class="image">
+        {% if image.permalink_url %}<a href="{{ image.permalink_url }}">{% else %}<a>{% endif %}
+          <img src="thumbnails/{{ image.thumb_filename }}" alt="">
+          <div class="image-info">
+            {{ image.local_created_at.strftime("%Y-%m-%d %H:%M") }}
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    <hr>
+    <footer>
+      Built with python-gyazo on {{ now.strftime("%Y-%m-%d %H:%M:%S") }}.
+    </footer>
+  </div>
+  <script src="masonry.pkgd.min.js"></script>
+  </body>
+</html>

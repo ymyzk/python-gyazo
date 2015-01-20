@@ -22,29 +22,41 @@ api = Api(client_id='YOUR_CLIENT_ID',
           client_secret='YOUR_CLIENT_SECRET',
           access_token='YOUR_ACCESS_TOKEN')
 
-# Get image list
+### Get image list
 images = api.get_image_list()
 for image in images:
     print(str(image))
 
-# Using image model
+### Using image model
 image = images[0]
 print("Image ID: " + image.image_id)
 print("URL: " + image.url)
 
-# Download image
+### Download image
 if image.url:
     with open(image.filename, 'wb') as f:
         f.write(image.download())
 
-# Upload image
+### Upload image
 with open('sample.png', 'rb') as f:
     image = api.upload_image(f)
     print(image.to_json())
 
-# Delete image
+### Delete image
 api.delete_image('IMAGE_ID')
 ```
+
+## Backup
+You can download all images with `gyazo-backup` command:
+
+```bash
+gyazo-backup --token <API_ACCESS_TOKEN> <DESTINATION_DIR>
+```
+
+Then, open `<DESTINATION_DIR>/index.html`.
+
+## License
+MIT. See [LICENSE](LICENSE).
 
 ## Links
 * [Gyazo API](https://gyazo.com/api/docs)
