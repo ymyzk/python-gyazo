@@ -1,0 +1,100 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import argparse
+from datetime import datetime
+from os import makedirs, path
+import shutil
+import sys
+
+from jinja2 import Environment, FileSystemLoader
+from progress.bar import Bar
+
+import gyazo
+
+
+def main(args):
+    # Destination directory check and create
+    try:
+        dest_dir = create_dest_dir(args.directory)
+        create_dest_dir(dest_dir + 'images/')
+        create_dest_dir(dest_dir + 'thumbnails/')
+    except IOError:
+        return 1
+
+    api = gyazo.Api(access_token=args.access_token)
+    images = download_image_list(api)
+    download_images(images, dest_dir)
+    export_html(images, dest_dir)
+
+    return 0
+
+
+def create_dest_dir(directory):
+    if path.exists(directory):
+        if path.isfile(directory):
+            raise IOError("File already exists: " + directory)
+    else:
+        makedirs(directory)
+    if directory[-1] != '/':
+        directory += '/'
+    return directory
+
+
+def download_image_list(api):
+    images = []
+    bar = Bar('List  ')
+    i = 1
+    while 1:
+        _images = api.get_image_list(page=i, per_page=100)
+        images += _images
+        bar.max = _images.num_pages
+        bar.next()
+        if not _images.has_next_page():
+            break
+        i += 1
+    bar.finish()
+    return images
+
+
+def download_images(images, dest_dir):
+    bar = Bar('Images', max=len(images))
+    for image in images:
+        if image.thumb_filename is not None:
+            thumb_file = dest_dir + 'thumbnails/' + image.thumb_filename
+            if not path.exists(thumb_file):
+                with open(thumb_file, 'wb') as f:
+                    f.write(image.download_thumb())
+        if image.filename is not None:
+            image_file = dest_dir + 'images/' + image.filename
+            if not path.exists(image_file):
+                with open(image_file, 'wb') as f:
+                    f.write(image.download())
+        bar.next()
+    bar.finish()
+
+
+def export_html(images, dest_dir):
+    root_dir = path.abspath(path.dirname(gyazo.__file__))
+    theme_dir = path.join(root_dir, 'themes/default/')
+    template_env = Environment(
+        loader=FileSystemLoader(theme_dir, encoding='utf-8'))
+    template = template_env.get_template('index.html')
+    html = template.render(images=images, now=datetime.now())
+
+    with open(dest_dir + 'index.html', 'w') as f:
+        f.write(html)
+
+    shutil.copy(path.join(theme_dir, 'index.css'),
+                path.join(dest_dir, 'index.css'))
+    shutil.copy(path.join(theme_dir, 'masonry.pkgd.min.js'),
+                path.join(dest_dir + 'masonry.pkgd.min.js'))
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description="Python Gyazo Backup")
+    parser.add_argument('--token', dest='access_token', required=True,
+                        help='API access token')
+    parser.add_argument('directory', help='Backup destination')
+    result = main(parser.parse_args())
+    sys.exit(result)
