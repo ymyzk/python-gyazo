@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import sys
+
 try:
     from setuptools import setup
 except ImportError:
@@ -15,6 +17,9 @@ requires = [
     'python-dateutil>=2.4',
     'requests>=2.5.0'
 ]
+
+if sys.version_info < (3, 2):
+    requires.append('futures>=2.2.0')
 
 classifiers = [
     'Development Status :: 4 - Beta',
