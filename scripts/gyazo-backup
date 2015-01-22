@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from os import makedirs, path
 import shutil
@@ -24,7 +25,7 @@ def main(args):
 
     api = gyazo.Api(access_token=args.access_token)
     images = download_image_list(api)
-    download_images(images, dest_dir)
+    download_images(images, dest_dir, num_threads=args.num_threads)
     export_html(images, dest_dir)
 
     return 0
@@ -57,20 +58,27 @@ def download_image_list(api):
     return images
 
 
-def download_images(images, dest_dir):
-    bar = Bar('Images', max=len(images))
-    for image in images:
-        if image.thumb_filename is not None:
-            thumb_file = dest_dir + 'thumbnails/' + image.thumb_filename
+def download_images(images, dest_dir, num_threads=1):
+    def download_image_and_thumbnail(img):
+        if img.thumb_filename is not None:
+            thumb_file = dest_dir + 'thumbnails/' + img.thumb_filename
             if not path.exists(thumb_file):
                 with open(thumb_file, 'wb') as f:
-                    f.write(image.download_thumb())
-        if image.filename is not None:
-            image_file = dest_dir + 'images/' + image.filename
+                    f.write(img.download_thumb())
+        if img.filename is not None:
+            image_file = dest_dir + 'images/' + img.filename
             if not path.exists(image_file):
                 with open(image_file, 'wb') as f:
-                    f.write(image.download())
-        bar.next()
+                        f.write(img.download())
+
+    bar = Bar('Images', max=len(images))
+    executor = ThreadPoolExecutor(max_workers=num_threads)
+    for image in images:
+        future = executor.submit(download_image_and_thumbnail, image)
+        future.add_done_callback(lambda _: bar.next())
+
+    # Wait until done
+    executor.shutdown(wait=True)
     bar.finish()
 
 
@@ -95,6 +103,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Python Gyazo Backup")
     parser.add_argument('--token', dest='access_token', required=True,
                         help='API access token')
-    parser.add_argument('directory', help='Backup destination')
+    parser.add_argument(
+        '--threads', dest='num_threads', default=8, type=int,
+        help='number of threads for downloading images (default: 8)')
+    parser.add_argument('directory', help='backup destination')
     result = main(parser.parse_args())
     sys.exit(result)
