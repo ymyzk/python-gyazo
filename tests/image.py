@@ -4,6 +4,8 @@
 from __future__ import absolute_import, unicode_literals
 import unittest
 
+import dateutil.parser
+
 from gyazo import Image, ImageList
 
 
@@ -65,6 +67,34 @@ class TestImage(unittest.TestCase):
         for sample, thumbname in zip(self.samples, self.thumbnames):
             image = Image.from_dict(sample)
             self.assertEqual(image.thumb_filename, thumbname)
+
+    def test_or(self):
+        dict_1 = {
+            'url': '',
+            'type': 'png',
+            'created_at': '2014-07-20T03:09:34+0900',
+            'image_id': '',
+            'thumb_url': 'https://i.gyazo.com/thumb/180/_eadaaad52408b1e53c09111d6959139f.png',
+            'permalink_url': ''
+        }
+        dict_2 = {
+            'url': 'https://i.gyazo.com/9d04d2da1b4daaaa234c68b5219dc1e3.png',
+            'type': 'png',
+            'created_at': '2014-07-20T03:09:34+0900',
+            'image_id': '9d04d2da1b4daaaa234c68b5219dc1e3',
+            'thumb_url': 'https://i.gyazo.com/thumb/180/_eadaaad52408b1e53c09111d6959139f.png',
+            'permalink_url': 'http://gyazo.com/9d04d2da1b4daaaa234c68b5219dc1e3'
+        }
+        image_1 = Image.from_dict(dict_1)
+        image_2 = Image.from_dict(dict_2)
+        for image in (image_1 | image_2, image_2 | image_1):
+            self.assertEqual(image.url, dict_2['url'])
+            self.assertEqual(image.type, dict_2['type'])
+            self.assertEqual(image.created_at,
+                             dateutil.parser.parse(dict_2['created_at']))
+            self.assertEqual(image.image_id, dict_2['image_id'])
+            self.assertEqual(image.thumb_url, dict_2['thumb_url'])
+            self.assertEqual(image.permalink_url, dict_2['permalink_url'])
 
 
 class TestImageList(unittest.TestCase):

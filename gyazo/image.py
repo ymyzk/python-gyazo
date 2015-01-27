@@ -22,6 +22,31 @@ class Image(object):
         self.type = kwargs.get('type', None)
         self.url = kwargs.get('url', None)
 
+    def __or__(self, other):
+        if not isinstance(other, Image):
+            raise NotImplemented
+
+        attrs = (
+            'created_at',
+            'image_id',
+            'permalink_url',
+            'star',
+            'thumb_url',
+            'type',
+            'url'
+        )
+
+        kwargs = {}
+        for attr in attrs:
+            attr1 = getattr(self, attr, "")
+            attr2 = getattr(other, attr, "")
+            if attr1 != "":
+                kwargs[attr] = attr1
+            elif attr2 != "":
+                kwargs[attr] = attr2
+
+        return Image(**kwargs)
+
     @property
     def filename(self):
         if self.url:
