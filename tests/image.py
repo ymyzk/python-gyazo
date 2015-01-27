@@ -9,28 +9,40 @@ from gyazo import Image, ImageList
 
 class TestImage(unittest.TestCase):
     def setUp(self):
-        self.samples = []
-        self.samples.append({
-            'url': 'https://i.gyazo.com/2c9044330d710fca3da64b222eddf5b5.png',
-            'type': 'png',
-            'created_at': '2014-07-25T08:29:51+0000',
-            'image_id': '2c9044330d710fca3da64b222eddf5b5',
-            'thumb_url': 'https://i.gyazo.com/thumb/180/_242799a7d541869e0b73dc93ee113fb5.png',
-            'permalink_url': 'http://gyazo.com/2c9044330d710fca3da64b222eddf5b5'})
-        self.samples.append({
-            'url': 'https://i.gyazo.com/9d04d2da1b4daaaa234c68b5219dc1e3.png',
-            'type': 'png',
-            'created_at': '2014-07-20T03:09:34+0900',
-            'image_id': '9d04d2da1b4daaaa234c68b5219dc1e3',
-            'thumb_url': 'https://i.gyazo.com/thumb/180/_eadaaad52408b1e53c09111d6959139f.png',
-            'permalink_url': 'http://gyazo.com/9d04d2da1b4daaaa234c68b5219dc1e3'})
-        self.samples.append({
-            'url': '',
-            'type': 'png',
-            'created_at': '2014-06-21T13:45:46+0000',
-            'image_id': '',
-            'thumb_url': 'https://i.gyazo.com/thumb/180/_ebb000813faac4c0572cc0fc0b2d8ede.png',
-            'permalink_url': ''})
+        self.samples = [
+            {
+                'url': 'https://i.gyazo.com/2c9044330d710fca3da64b222eddf5b5.png',
+                'type': 'png',
+                'created_at': '2014-07-25T08:29:51+0000',
+                'image_id': '2c9044330d710fca3da64b222eddf5b5',
+                'thumb_url': 'https://i.gyazo.com/thumb/180/_242799a7d541869e0b73dc93ee113fb5.png',
+                'permalink_url': 'http://gyazo.com/2c9044330d710fca3da64b222eddf5b5'},
+            {
+                'url': 'https://i.gyazo.com/9d04d2da1b4daaaa234c68b5219dc1e3.png',
+                'type': 'png',
+                'created_at': '2014-07-20T03:09:34+0900',
+                'image_id': '9d04d2da1b4daaaa234c68b5219dc1e3',
+                'thumb_url': 'https://i.gyazo.com/thumb/180/_eadaaad52408b1e53c09111d6959139f.png',
+                'permalink_url': 'http://gyazo.com/9d04d2da1b4daaaa234c68b5219dc1e3'},
+            {
+                'url': '',
+                'type': 'png',
+                'created_at': '2014-06-21T13:45:46+0000',
+                'image_id': '',
+                'thumb_url': 'https://i.gyazo.com/thumb/180/_ebb000813faac4c0572cc0fc0b2d8ede.png',
+                'permalink_url': ''
+            }
+        ]
+        self.filenames = [
+            '2c9044330d710fca3da64b222eddf5b5.png',
+            '9d04d2da1b4daaaa234c68b5219dc1e3.png',
+            None
+        ]
+        self.thumbnames = [
+            '_242799a7d541869e0b73dc93ee113fb5.png',
+            '_eadaaad52408b1e53c09111d6959139f.png',
+            '_ebb000813faac4c0572cc0fc0b2d8ede.png'
+        ]
 
     def test_from_dict(self):
         for sample in self.samples:
@@ -43,6 +55,16 @@ class TestImage(unittest.TestCase):
             for key in sample:
                 if sample[key] is not None and sample[key] != '':
                     self.assertEqual(sample[key], image[key])
+
+    def test_filename(self):
+        for sample, filename in zip(self.samples, self.filenames):
+            image = Image.from_dict(sample)
+            self.assertEqual(image.filename, filename)
+
+    def test_thumb_filename(self):
+        for sample, thumbname in zip(self.samples, self.thumbnames):
+            image = Image.from_dict(sample)
+            self.assertEqual(image.thumb_filename, thumbname)
 
 
 class TestImageList(unittest.TestCase):
