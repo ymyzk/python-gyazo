@@ -201,6 +201,9 @@ class ImageList(object):
         if self.per_page:
             self.per_page = int(self.per_page)
 
+    def to_json(self):
+        return json.dumps([i.to_dict() for i in self.images])
+
     @staticmethod
     def from_list(data):
         return ImageList(images=[Image.from_dict(d) for d in data])
