@@ -146,6 +146,14 @@ class ImageList(object):
     def __iter__(self):
         return self.images.__iter__()
 
+    def __add__(self, other):
+        if not isinstance(other, ImageList):
+            raise NotImplemented
+
+        images = self.images + other.images
+
+        return ImageList(images=images, total_count=len(images))
+
     def __or__(self, other):
         if not isinstance(other, ImageList):
             raise NotImplemented

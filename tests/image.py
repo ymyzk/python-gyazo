@@ -126,7 +126,8 @@ class TestImageList(unittest.TestCase):
             }
         ]
         self.images = ImageList(
-            images=[Image.from_dict(d) for d in images_1_dict])
+            images=[Image.from_dict(d) for d in images_1_dict],
+            total_count=len(images_1_dict))
 
     def test_has_next_page(self):
         il = ImageList()
@@ -150,6 +151,14 @@ class TestImageList(unittest.TestCase):
         self.assertFalse(il.has_previous_page())
         il.current_page = 1
         self.assertTrue(il.has_previous_page())
+
+    def test_add(self):
+        images = self.images + self.images
+        self.assertEqual(images.total_count, 2 * self.images.total_count)
+        self.assertEqual(images.total_count, len(images.images))
+        self.assertIsNone(images.current_page)
+        self.assertIsNone(images.per_page)
+        self.assertIsNone(images.user_type)
 
     def test_or(self):
         image_dict = {
