@@ -146,6 +146,30 @@ class ImageList(object):
     def __iter__(self):
         return self.images.__iter__()
 
+    def __or__(self, other):
+        if not isinstance(other, ImageList):
+            raise NotImplemented
+
+        index_1 = {}
+        for image in self:
+            index_1[image.thumb_url] = image
+
+        index_2 = {}
+        for image in other:
+            index_2[image.thumb_url] = image
+
+        for key in index_2:
+            if key in index_1:
+                index_1[key] |= index_2[key]
+            else:
+                index_1[key] = index_2[key]
+
+        images = index_1.values()
+        return ImageList(images=sorted(images,
+                                       key=lambda i: i.created_at,
+                                       reverse=True),
+                         total_count=len(images))
+
     @property
     def num_pages(self):
         return math.ceil(self.total_count / self.per_page)
