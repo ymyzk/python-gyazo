@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals
+from __future__ import unicode_literals
 
 import requests
 
@@ -10,11 +10,12 @@ from .image import Image, ImageList
 
 
 class Api(object):
+    """A Python interface for Gyazo API"""
+
     def __init__(self, client_id=None, client_secret=None, access_token=None,
                  api_url='https://api.gyazo.com',
                  upload_url='https://upload.gyazo.com'):
-        """A Python interface for Gyazo API
-
+        """
         :param client_id: API client ID
         :type client_id: str or unicode
         :param client_secret: API secret
@@ -22,13 +23,12 @@ class Api(object):
         :param access_token: API access token
         :type access_token: str or unicode
         :param api_url: (optional) API endpoint URL
-        (default: https://api.gyazo.com)
+                        (default: https://api.gyazo.com)
         :type api_url: str or unicode
         :param upload_url: (optional) Upload API endpoint URL
-        (default: https://upload.gyazo.com)
+                        (default: https://upload.gyazo.com)
         :type upload_url: str or unicode
         """
-
         self.api_url = api_url
         self.upload_url = upload_url
         self._client_id = client_id
@@ -38,9 +38,9 @@ class Api(object):
     def get_image_list(self, page=1, per_page=20):
         """Return a list of user's saved images
 
-        :param int page: Page (default: 1)
-        :param int per_page: Number of images per page
-        (default: 20, min: 1, max 100)
+        :param int page: (optional) Page number (default: 1)
+        :param int per_page: (optional) Number of images per page
+                             (default: 20, min: 1, max 100)
         """
         url = self.api_url + '/api/images'
         parameters = {
@@ -56,7 +56,7 @@ class Api(object):
     def upload_image(self, image_file):
         """Upload an image
 
-        :param image_file: File-like object of image file
+        :param image_file: File-like object of an image file
         :type image_file: file object
         """
         url = self.upload_url + '/api/upload'
@@ -85,13 +85,14 @@ class Api(object):
         :type url: str or unicode
         :param method: HTTP method (get, post or delete)
         :type method: str or unicode
+        :raises GyazoError:
         """
-        headers = {'Authorization': 'Bearer ' + self._access_token}
-
+        headers = {}
         if data is None:
             data = {}
 
-        data['access_token'] = self._access_token
+        if self._access_token is not None:
+            data['access_token'] = self._access_token
 
         if method == 'get':
             try:
