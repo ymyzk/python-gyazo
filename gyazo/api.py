@@ -10,26 +10,25 @@ from .image import Image, ImageList
 
 
 class Api(object):
-    """A Python interface for Gyazo API
-
-    :param client_id: API client ID
-    :type client_id: str or unicode
-    :param client_secret: API secret
-    :type client_secret: str or unicode
-    :param access_token: API access token
-    :type access_token: str or unicode
-    :param api_url: (optional) API endpoint URL
-                    (default: https://api.gyazo.com)
-    :type api_url: str or unicode
-    :param upload_url: (optional) Upload API endpoint URL
-                    (default: https://upload.gyazo.com)
-    :type upload_url: str or unicode
-    """
+    """A Python interface for Gyazo API"""
 
     def __init__(self, client_id=None, client_secret=None, access_token=None,
                  api_url='https://api.gyazo.com',
                  upload_url='https://upload.gyazo.com'):
-
+        """
+        :param client_id: API client ID
+        :type client_id: str or unicode
+        :param client_secret: API secret
+        :type client_secret: str or unicode
+        :param access_token: API access token
+        :type access_token: str or unicode
+        :param api_url: (optional) API endpoint URL
+                        (default: https://api.gyazo.com)
+        :type api_url: str or unicode
+        :param upload_url: (optional) Upload API endpoint URL
+                        (default: https://upload.gyazo.com)
+        :type upload_url: str or unicode
+        """
         self.api_url = api_url
         self.upload_url = upload_url
         self._client_id = client_id
@@ -86,6 +85,7 @@ class Api(object):
         :type url: str or unicode
         :param method: HTTP method (get, post or delete)
         :type method: str or unicode
+        :raises GyazoError:
         """
         headers = {}
         if data is None:
