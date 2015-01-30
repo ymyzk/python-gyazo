@@ -78,7 +78,6 @@ class Api(object):
         """
         url = self.api_url + '/api/images/' + image_id
         response = self._request_url(url, 'delete', with_access_token=True)
-        print(response.json())
         headers, result = self._parse_and_check(response)
         return Image.from_dict(result)
 
