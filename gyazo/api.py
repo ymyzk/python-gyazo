@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 
 import requests
+import six
 
 from .error import GyazoError
 from .image import Image, ImageList
@@ -98,18 +99,18 @@ class Api(object):
             try:
                 return requests.get(url, data=data, headers=headers)
             except requests.RequestException as e:
-                raise GyazoError(str(e))
+                raise GyazoError(six.text_type(e))
         elif method == 'post':
             try:
                 return requests.post(url, data=data, files=files,
                                      headers=headers)
             except requests.RequestException as e:
-                raise GyazoError(str(e))
+                raise GyazoError(six.text_type(e))
         elif method == 'delete':
             try:
                 return requests.delete(url, headers=headers)
             except requests.RequestException as e:
-                raise GyazoError(str(e))
+                raise GyazoError(six.text_type(e))
 
         # Unsupported method
         return None
