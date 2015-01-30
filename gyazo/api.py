@@ -48,7 +48,8 @@ class Api(object):
             'page': page,
             'per_page': per_page
         }
-        response = self._request_url(url, 'get', parameters)
+        response = self._request_url(
+            url, 'get', parameters, with_access_token=True)
         headers, result = self._parse_and_check(response)
         images = ImageList.from_list(result)
         images.set_attributes_from_headers(headers)
@@ -64,7 +65,8 @@ class Api(object):
         files = {
             'imagedata': image_file
         }
-        response = self._request_url(url, 'post', files=files)
+        response = self._request_url(
+            url, 'post', files=files, with_access_token=True)
         headers, result = self._parse_and_check(response)
         return Image.from_dict(result)
 
@@ -75,24 +77,34 @@ class Api(object):
         :type image_id: str or unicode
         """
         url = self.api_url + '/api/images/' + image_id
-        response = self._request_url(url, 'delete')
+        response = self._request_url(url, 'delete', with_access_token=True)
+        print(response.json())
         headers, result = self._parse_and_check(response)
         return Image.from_dict(result)
 
-    def _request_url(self, url, method, data=None, files=None):
+    def _request_url(self, url, method, data=None, files=None,
+                     with_client_id=False, with_access_token=False):
         """Send HTTP request
 
         :param url: URL
         :type url: str or unicode
         :param method: HTTP method (get, post or delete)
         :type method: str or unicode
+        :param with_client_id: send request with client_id (default: false)
+        :type with_client_id: bool
+        :param with_access_token: send request with with_access_token
+                                  (default: false)
+        :type with_access_token: bool
         :raises GyazoError:
         """
         headers = {}
         if data is None:
             data = {}
 
-        if self._access_token is not None:
+        if with_client_id and self._client_id is not None:
+            data['client_id'] = self._client_id
+
+        if with_access_token and self._access_token is not None:
             data['access_token'] = self._access_token
 
         if method == 'get':
@@ -108,7 +120,7 @@ class Api(object):
                 raise GyazoError(six.text_type(e))
         elif method == 'delete':
             try:
-                return requests.delete(url, headers=headers)
+                return requests.delete(url, data=data, headers=headers)
             except requests.RequestException as e:
                 raise GyazoError(six.text_type(e))
 
