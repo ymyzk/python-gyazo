@@ -9,13 +9,14 @@ except ImportError:
 
 
 __author__ = 'Yusuke Miyazaki <miyazaki.dev@gmail.com>'
-__version__ = '0.6.0'
+__version__ = '0.6.1'
 
 requires = [
     'Jinja2>=2.7.0',
     'progress>=1.2',
     'python-dateutil>=2.4',
-    'requests>=2.5.0'
+    'requests>=2.5.0',
+    'six>=1.9.0'
 ]
 
 if sys.version_info < (3, 2):

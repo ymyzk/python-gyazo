@@ -32,7 +32,8 @@ h1 {
 .image img {
   border-radius: 5px;
   display: block;
-  width: 100%;
+  width: 200px;
+  max-height: 300px;
 }
 
 .image-info {
