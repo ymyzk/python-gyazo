@@ -81,6 +81,21 @@ class Api(object):
         headers, result = self._parse_and_check(response)
         return Image.from_dict(result)
 
+    def get_oembed(self, url):
+        """Return an oEmbed format json dictionary
+
+        :param url: Image page URL (ex. http://gyazo.com/xxxxx)
+        :type url: str or unicode
+        :rtype: dict
+        """
+        api_url = self.api_url + '/api/oembed'
+        parameters = {
+            'url': url
+        }
+        response = self._request_url(api_url, 'get', parameters)
+        headers, result = self._parse_and_check(response)
+        return result
+
     def _request_url(self, url, method, data=None, files=None,
                      with_client_id=False, with_access_token=False):
         """Send HTTP request

@@ -1,7 +1,7 @@
 # python-gyazo
 [![PyPI version](https://badge.fury.io/py/python-gyazo.svg)](http://badge.fury.io/py/python-gyazo)
 [![Build Status](https://travis-ci.org/ymyzk/python-gyazo.svg?branch=master)](https://travis-ci.org/ymyzk/python-gyazo)
-[![Coverage Status](https://img.shields.io/coveralls/ymyzk/python-gyazo.svg)](https://coveralls.io/r/ymyzk/python-gyazo?branch=master)
+[![Coverage Status](https://coveralls.io/repos/ymyzk/python-gyazo/badge.svg?branch=master)](https://coveralls.io/r/ymyzk/python-gyazo?branch=master)
 
 A Python wrapper for Gyazo API.
 
@@ -44,6 +44,10 @@ with open('sample.png', 'rb') as f:
 
 ### Delete image
 api.delete_image('IMAGE_ID')
+
+### oEmbed
+image = images[0]
+print(api.get_oembed(image.permalink_url))
 ```
 
 ## Backup

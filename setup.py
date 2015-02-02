@@ -9,7 +9,7 @@ except ImportError:
 
 
 __author__ = 'Yusuke Miyazaki <miyazaki.dev@gmail.com>'
-__version__ = '0.6.2'
+__version__ = '0.7.0'
 
 requires = [
     'Jinja2>=2.7.0',
@@ -46,6 +46,7 @@ setup(name='python-gyazo',
       author=__author__,
       author_email='miyazaki.dev@gmail.com',
       url='https://github.com/ymyzk/python-gyazo',
+      license='MIT',
       packages=['gyazo'],
       package_data={'gyazo': ['themes/default/*']},
       scripts=['scripts/gyazo-backup'],
