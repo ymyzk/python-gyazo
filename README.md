@@ -44,6 +44,10 @@ with open('sample.png', 'rb') as f:
 
 ### Delete image
 api.delete_image('IMAGE_ID')
+
+### oEmbed
+image = images[0]
+print(api.get_oembed(image.permalink_url))
 ```
 
 ## Backup
