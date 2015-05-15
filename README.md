@@ -2,6 +2,7 @@
 [![PyPI version](https://badge.fury.io/py/python-gyazo.svg)](http://badge.fury.io/py/python-gyazo)
 [![Downloads](https://pypip.in/download/python-gyazo/badge.svg)](https://pypi.python.org/pypi/python-gyazo/)
 [![Build Status](https://travis-ci.org/ymyzk/python-gyazo.svg?branch=master)](https://travis-ci.org/ymyzk/python-gyazo)
+[![Code Climate](https://codeclimate.com/github/ymyzk/python-gyazo/badges/gpa.svg)](https://codeclimate.com/github/ymyzk/python-gyazo)
 [![Coverage Status](https://coveralls.io/repos/ymyzk/python-gyazo/badge.svg?branch=master)](https://coveralls.io/r/ymyzk/python-gyazo?branch=master)
 
 A Python wrapper for Gyazo API.
