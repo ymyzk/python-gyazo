@@ -18,6 +18,12 @@ requires = [
     'six>=1.9.0'
 ]
 
+extras_require = {
+    'docs': [
+        'Sphinx>=1.3'
+    ]
+}
+
 if sys.version_info < (3, 2):
     requires.append('futures>=3.0.0')
 
@@ -51,4 +57,5 @@ setup(name='python-gyazo',
       scripts=['scripts/gyazo-backup'],
       test_suite='tests',
       install_requires=requires,
+      extras_require=extras_require,
       classifiers=classifiers)
