@@ -75,7 +75,7 @@ def save_image_list(images, dest_dir):
     if path.exists(image_file) and path.isdir(image_file):
         raise IOError("Directory already exists: " + image_file)
     with open(image_file, 'w') as f:
-        f.write(images.to_json())
+        f.write(images.to_json(indent=2))
 
 
 def download_images(images, dest_dir, num_threads=1):
