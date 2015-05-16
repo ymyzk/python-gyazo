@@ -55,6 +55,10 @@ class Image(object):
         """Return a string representation of this instance"""
         return self.to_json()
 
+    def __unicode__(self):
+        """Return a string representation of this instance"""
+        return self.to_json()
+
     def __or__(self, other):
         if isinstance(other, Image):
             attrs = (
