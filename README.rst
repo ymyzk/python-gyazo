@@ -18,7 +18,7 @@ python-gyazo
 
 A Python wrapper for Gyazo API.
 
-The full-documentation is available on the `Read the Docs`_.
+The full-documentation is available on `Read the Docs`_.
 
 Requirements
 ------------
