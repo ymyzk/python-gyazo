@@ -37,7 +37,7 @@ class Image(object):
 
         :param data: A JSON dict
         :type data: dict
-        :rtype: gyazo.Image
+        :rtype: Image
         """
         created_at = data.get('created_at', None)
         if created_at:
@@ -52,6 +52,10 @@ class Image(object):
                      url=data.get('url', None))
 
     def __str__(self):
+        """Return a string representation of this instance"""
+        return self.to_json()
+
+    def __unicode__(self):
         """Return a string representation of this instance"""
         return self.to_json()
 
@@ -84,7 +88,7 @@ class Image(object):
         """An image filename
 
         :getter: Return an image filename if it exists
-        :rtype: str or unicode
+        :rtype: str | unicode
         """
         if self.url:
             return self.url.split('/')[-1]
@@ -95,7 +99,7 @@ class Image(object):
         """A thumbnail image filename
 
         :getter: Return a thumbnail filename if it exists
-        :rtype: str or unicode
+        :rtype: str | unicode
         """
         if self.thumb_url:
             return self.thumb_url.split('/')[-1]
@@ -112,12 +116,17 @@ class Image(object):
             return self.created_at.astimezone(dateutil.tz.tzlocal())
         return None
 
-    def to_json(self):
+    def to_json(self, indent=None, sort_keys=True):
         """Return a JSON string representation of this instance
 
-        :rtype: str or unicode
+        :param indent: specify an indent level or a string used to indent each
+                       level
+        :type indent: int | str
+        :param sort_keys: the output is sorted by key
+        :type sort_keys: bool
+        :rtype: str | unicode
         """
-        return json.dumps(self.to_dict(), sort_keys=True)
+        return json.dumps(self.to_dict(), indent=indent, sort_keys=sort_keys)
 
     def to_dict(self):
         """Return a dict representation of this instance
@@ -147,7 +156,7 @@ class Image(object):
     def download(self):
         """Download an image file
 
-        :rtype: bytes or str
+        :rtype: bytes | str
         :raise GyazoError:
         """
         if self.url:
@@ -160,7 +169,7 @@ class Image(object):
     def download_thumb(self):
         """Download a thumbnail image file
 
-        :rtype: bytes or str
+        :rtype: bytes | str
         :raise GyazoError:
         """
         if self.thumb_url:
@@ -274,12 +283,18 @@ class ImageList(object):
         if self.per_page:
             self.per_page = int(self.per_page)
 
-    def to_json(self):
+    def to_json(self, indent=None, sort_keys=True):
         """Return a JSON string representation of this instance
 
-        :rtype: str or unicode
+        :param indent: specify an indent level or a string used to indent each
+                       level
+        :type indent: int | str
+        :param sort_keys: the output of dictionaries is sorted by key
+        :type sort_keys: bool
+        :rtype: str | unicode
         """
-        return json.dumps([i.to_dict() for i in self.images])
+        return json.dumps([i.to_dict() for i in self.images],
+                          indent=indent, sort_keys=sort_keys)
 
     @staticmethod
     def from_list(data):
@@ -287,6 +302,6 @@ class ImageList(object):
 
         :param data: A JSON list
         :type data: list
-        :rtype: gyazo.ImageList
+        :rtype: ImageList
         """
         return ImageList(images=[Image.from_dict(d) for d in data])
