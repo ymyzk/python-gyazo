@@ -18,17 +18,17 @@ class Api(object):
                  upload_url='https://upload.gyazo.com'):
         """
         :param client_id: API client ID
-        :type client_id: str or unicode
+        :type client_id: str | unicode
         :param client_secret: API secret
-        :type client_secret: str or unicode
+        :type client_secret: str | unicode
         :param access_token: API access token
-        :type access_token: str or unicode
+        :type access_token: str | unicode
         :param api_url: (optional) API endpoint URL
                         (default: https://api.gyazo.com)
-        :type api_url: str or unicode
+        :type api_url: str | unicode
         :param upload_url: (optional) Upload API endpoint URL
                         (default: https://upload.gyazo.com)
-        :type upload_url: str or unicode
+        :type upload_url: str | unicode
         """
         self.api_url = api_url
         self.upload_url = upload_url
@@ -42,6 +42,7 @@ class Api(object):
         :param int page: (optional) Page number (default: 1)
         :param int per_page: (optional) Number of images per page
                              (default: 20, min: 1, max 100)
+        :rtype: ImageList
         """
         url = self.api_url + '/api/images'
         parameters = {
@@ -60,6 +61,7 @@ class Api(object):
 
         :param image_file: File-like object of an image file
         :type image_file: file object
+        :rtype: Image
         """
         url = self.upload_url + '/api/upload'
         files = {
@@ -74,7 +76,8 @@ class Api(object):
         """Delete an image
 
         :param image_id: Image ID
-        :type image_id: str or unicode
+        :type image_id: str | unicode
+        :rtype: Image
         """
         url = self.api_url + '/api/images/' + image_id
         response = self._request_url(url, 'delete', with_access_token=True)
@@ -85,7 +88,7 @@ class Api(object):
         """Return an oEmbed format json dictionary
 
         :param url: Image page URL (ex. http://gyazo.com/xxxxx)
-        :type url: str or unicode
+        :type url: str | unicode
         :rtype: dict
         """
         api_url = self.api_url + '/api/oembed'
@@ -101,15 +104,15 @@ class Api(object):
         """Send HTTP request
 
         :param url: URL
-        :type url: str or unicode
+        :type url: str | unicode
         :param method: HTTP method (get, post or delete)
-        :type method: str or unicode
+        :type method: str | unicode
         :param with_client_id: send request with client_id (default: false)
         :type with_client_id: bool
         :param with_access_token: send request with with_access_token
                                   (default: false)
         :type with_access_token: bool
-        :raises GyazoError:
+        :raise GyazoError:
         """
         headers = {}
         if data is None:
