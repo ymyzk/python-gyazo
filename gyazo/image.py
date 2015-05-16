@@ -112,12 +112,17 @@ class Image(object):
             return self.created_at.astimezone(dateutil.tz.tzlocal())
         return None
 
-    def to_json(self):
+    def to_json(self, indent=None, sort_keys=True):
         """Return a JSON string representation of this instance
 
+        :param indent: specify an indent level or a string used to indent each
+                       level
+        :type indent: int | str
+        :param sort_keys: the output is sorted by key
+        :type sort_keys: bool
         :rtype: str or unicode
         """
-        return json.dumps(self.to_dict(), sort_keys=True)
+        return json.dumps(self.to_dict(), indent=indent, sort_keys=sort_keys)
 
     def to_dict(self):
         """Return a dict representation of this instance
@@ -274,12 +279,18 @@ class ImageList(object):
         if self.per_page:
             self.per_page = int(self.per_page)
 
-    def to_json(self):
+    def to_json(self, indent=None, sort_keys=True):
         """Return a JSON string representation of this instance
 
-        :rtype: str or unicode
+        :param indent: specify an indent level or a string used to indent each
+                       level
+        :type indent: int | str
+        :param sort_keys: the output of dictionaries is sorted by key
+        :type sort_keys: bool
+            :rtype: str or unicode
         """
-        return json.dumps([i.to_dict() for i in self.images])
+        return json.dumps([i.to_dict() for i in self.images],
+                          indent=indent, sort_keys=sort_keys)
 
     @staticmethod
     def from_list(data):
