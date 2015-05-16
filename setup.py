@@ -20,7 +20,8 @@ requires = [
 
 extras_require = {
     'docs': [
-        'Sphinx>=1.3'
+        'Sphinx<1.4,>=1.3',
+        'sphinx-rtd-theme<0.2,>=0.1.8'
     ]
 }
 
