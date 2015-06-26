@@ -9,6 +9,9 @@ python-gyazo
 .. image:: https://travis-ci.org/ymyzk/python-gyazo.svg?branch=master
    :target: https://travis-ci.org/ymyzk/python-gyazo
    :alt: Build Status
+.. image:: https://readthedocs.org/projects/python-gyazo/badge/?version=latest
+   :target: http://python-gyazo.readthedocs.org/
+   :alt: Documentation Status
 .. image:: https://codeclimate.com/github/ymyzk/python-gyazo/badges/gpa.svg
    :target: https://codeclimate.com/github/ymyzk/python-gyazo
    :alt: Code Climate
