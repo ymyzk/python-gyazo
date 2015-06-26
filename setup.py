@@ -26,7 +26,7 @@ extras_require = {
 }
 
 if sys.version_info < (3, 2):
-    requires.append('futures>=3.0.2')
+    requires.append('futures>=3.0.3')
 
 classifiers = [
     'Development Status :: 4 - Beta',
