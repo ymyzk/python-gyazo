@@ -6,10 +6,9 @@ try:
 except ImportError:
     from distutils.core import setup
 
-from gyazo import __version__
-
 
 __author__ = 'Yusuke Miyazaki <miyazaki.dev@gmail.com>'
+__version__ = '0.9.0'
 
 install_requires = [
     'Jinja2>=2.8',
