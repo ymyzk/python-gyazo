@@ -8,25 +8,29 @@ except ImportError:
 
 
 __author__ = 'Yusuke Miyazaki <miyazaki.dev@gmail.com>'
-__version__ = '0.9.0'
+__version__ = '0.10.0'
 
-requires = [
-    'Jinja2>=2.7.3',
+install_requires = [
+    'Jinja2>=2.8',
     'progress>=1.2',
     'python-dateutil>=2.4.2',
     'requests>=2.7.0',
     'six>=1.9.0'
 ]
 
+if not 'bdist_wheel' in sys.argv:
+    if sys.version_info < (3, 2):
+        install_requires.append('futures>=3.0.3')
+
 extras_require = {
+    ':python_version=="2.7"': [
+        'futures>=3.0.3'
+    ],
     'docs': [
         'Sphinx<1.4,>=1.3.1',
         'sphinx-rtd-theme<0.2,>=0.1.8'
     ]
 }
-
-if sys.version_info < (3, 2):
-    requires.append('futures>=3.0.3')
 
 classifiers = [
     'Development Status :: 4 - Beta',
@@ -41,6 +45,7 @@ classifiers = [
     'Programming Language :: Python :: 3.2',
     'Programming Language :: Python :: 3.3',
     'Programming Language :: Python :: 3.4',
+    'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: Implementation :: PyPy',
     'Topic :: Internet',
     'Topic :: Software Development :: Libraries :: Python Modules',
@@ -58,6 +63,6 @@ setup(name='python-gyazo',
       package_data={'gyazo': ['themes/default/*']},
       scripts=['scripts/gyazo-backup'],
       test_suite='tests',
-      install_requires=requires,
+      install_requires=install_requires,
       extras_require=extras_require,
       classifiers=classifiers)

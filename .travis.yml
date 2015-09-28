@@ -1,6 +1,8 @@
 language: python
+python:
+  - 3.5
 sudo: false
 install:
-  - pip install 'tox>=2.0,<2.1'
+  - pip install 'tox>=2.1,<2.2'
 script:
   - tox
