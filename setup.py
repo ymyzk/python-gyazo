@@ -11,7 +11,7 @@ __author__ = 'Yusuke Miyazaki <miyazaki.dev@gmail.com>'
 __version__ = '0.9.0'
 
 install_requires = [
-    'Jinja2>=2.7.3',
+    'Jinja2>=2.8',
     'progress>=1.2',
     'python-dateutil>=2.4.2',
     'requests>=2.7.0',
