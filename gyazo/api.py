@@ -126,7 +126,7 @@ class Api(object):
 
         if method == 'get':
             try:
-                return requests.get(url, data=data, headers=headers)
+                return requests.get(url, params=data, headers=headers)
             except requests.RequestException as e:
                 raise GyazoError(six.text_type(e))
         elif method == 'post':
@@ -137,7 +137,7 @@ class Api(object):
                 raise GyazoError(six.text_type(e))
         elif method == 'delete':
             try:
-                return requests.delete(url, data=data, headers=headers)
+                return requests.delete(url, params=data, headers=headers)
             except requests.RequestException as e:
                 raise GyazoError(six.text_type(e))
 
