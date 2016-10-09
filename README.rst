@@ -10,7 +10,7 @@ python-gyazo
    :target: https://travis-ci.org/ymyzk/python-gyazo
    :alt: Build Status
 .. image:: https://readthedocs.org/projects/python-gyazo/badge/?version=latest
-   :target: http://python-gyazo.readthedocs.org/
+   :target: https://python-gyazo.readthedocs.io/
    :alt: Documentation Status
 .. image:: https://codeclimate.com/github/ymyzk/python-gyazo/badges/gpa.svg
    :target: https://codeclimate.com/github/ymyzk/python-gyazo
@@ -89,6 +89,6 @@ License
 -------
 MIT License. Please see `LICENSE`_.
 
-.. _Read the Docs: http://python-gyazo.readthedocs.org/
-.. _this page: http://python-gyazo.readthedocs.org/en/stable/backup.html
+.. _Read the Docs: https://python-gyazo.readthedocs.io/
+.. _this page: https://python-gyazo.readthedocs.io/en/stable/backup.html
 .. _LICENSE: LICENSE
