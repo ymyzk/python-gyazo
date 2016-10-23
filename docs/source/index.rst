@@ -10,7 +10,6 @@ Contents
    :maxdepth: 2
 
    quickstart
-   backup
    reference
    license
 
