@@ -8,7 +8,7 @@ except ImportError:
 
 
 __author__ = 'Yusuke Miyazaki <miyazaki.dev@gmail.com>'
-__version__ = '0.10.1'
+__version__ = '0.11.0'
 
 install_requires = [
     'Jinja2>=2.8',
