@@ -1,17 +1,18 @@
 #!/usr/bin/env python
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from codecs import open
+from os import path
 
+from setuptools import setup
 
-__author__ = 'Yusuke Miyazaki <miyazaki.dev@gmail.com>'
-__version__ = '0.11.0'
+here = path.abspath(path.dirname(__file__))
+
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
 install_requires = [
     'python-dateutil>=2.4.2',
     'requests>=2.7.0',
-    'six>=1.9.0'
+    'six>=1.9.0',
 ]
 
 extras_require = {
@@ -38,15 +39,18 @@ classifiers = [
     'Topic :: Software Development :: Libraries :: Python Modules',
 ]
 
-setup(name='python-gyazo',
-      version=__version__,
-      description='A Python wrapper for Gyazo API',
-      author='Yusuke Miyazaki',
-      author_email='miyazaki.dev@gmail.com',
-      url='https://github.com/ymyzk/python-gyazo',
-      license='MIT',
-      packages=['gyazo'],
-      test_suite='tests',
-      install_requires=install_requires,
-      extras_require=extras_require,
-      classifiers=classifiers)
+setup(
+    name='python-gyazo',
+    version='0.11.0',
+    description='A Python wrapper for Gyazo API',
+    long_description=long_description,
+    author='Yusuke Miyazaki',
+    author_email='miyazaki.dev@gmail.com',
+    url='https://github.com/ymyzk/python-gyazo',
+    license='MIT',
+    packages=['gyazo'],
+    test_suite='tests',
+    install_requires=install_requires,
+    extras_require=extras_require,
+    classifiers=classifiers,
+)
