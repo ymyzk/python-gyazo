@@ -75,17 +75,12 @@ At first, you must create an application and get an access token from https://gy
 
 Backup
 ------
-python-gyazo includes a utility program called ``gyazo-backup``.
-You can download all images from Gyazo with this command.
-
-.. image:: docs/source/images/backup_example.jpg
-
-For more details, please see `this page`_.
+``gyazo-backup`` is moved to `python-gyazo-backup`_.
 
 License
 -------
 MIT License. Please see `LICENSE`_.
 
 .. _Read the Docs: https://python-gyazo.readthedocs.io/
-.. _this page: https://python-gyazo.readthedocs.io/en/stable/backup.html
+.. _python-gyazo-backup: https://github.com/ymyzk/python-gyazo-backup
 .. _LICENSE: LICENSE

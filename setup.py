@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-import sys
-
 try:
     from setuptools import setup
 except ImportError:
@@ -11,21 +9,12 @@ __author__ = 'Yusuke Miyazaki <miyazaki.dev@gmail.com>'
 __version__ = '0.11.0'
 
 install_requires = [
-    'Jinja2>=2.8',
-    'progress>=1.2',
     'python-dateutil>=2.4.2',
     'requests>=2.7.0',
     'six>=1.9.0'
 ]
 
-if not 'bdist_wheel' in sys.argv:
-    if sys.version_info < (3, 2):
-        install_requires.append('futures>=3.0.3')
-
 extras_require = {
-    ':python_version=="2.7"': [
-        'futures>=3.0.3'
-    ],
     'docs': [
         'Sphinx<1.4,>=1.3.1',
         'sphinx-rtd-theme<0.2,>=0.1.8'
@@ -34,7 +23,6 @@ extras_require = {
 
 classifiers = [
     'Development Status :: 4 - Beta',
-    'Environment :: Console',
     'Intended Audience :: Developers',
     'Operating System :: OS Independent',
     'License :: OSI Approved :: MIT License',
@@ -48,7 +36,6 @@ classifiers = [
     'Programming Language :: Python :: Implementation :: PyPy',
     'Topic :: Internet',
     'Topic :: Software Development :: Libraries :: Python Modules',
-    'Topic :: Utilities'
 ]
 
 setup(name='python-gyazo',
@@ -59,8 +46,6 @@ setup(name='python-gyazo',
       url='https://github.com/ymyzk/python-gyazo',
       license='MIT',
       packages=['gyazo'],
-      package_data={'gyazo': ['themes/default/*']},
-      scripts=['scripts/gyazo-backup'],
       test_suite='tests',
       install_requires=install_requires,
       extras_require=extras_require,
