@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 
 import requests
 import six
+from typing import Any, AnyStr, BinaryIO, Dict  # noqa: F401
 
 from .error import GyazoError
 from .image import Image, ImageList
@@ -13,22 +14,21 @@ from .image import Image, ImageList
 class Api(object):
     """A Python interface for Gyazo API"""
 
-    def __init__(self, client_id=None, client_secret=None, access_token=None,
-                 api_url='https://api.gyazo.com',
-                 upload_url='https://upload.gyazo.com'):
+    def __init__(self,
+                 client_id=None,  # type: AnyStr
+                 client_secret=None,  # type: AnyStr
+                 access_token=None,  # type: AnyStr
+                 api_url='https://api.gyazo.com',  # type: AnyStr
+                 upload_url='https://upload.gyazo.com'  # type: AnyStr
+                 ):
         """
         :param client_id: API client ID
-        :type client_id: str | unicode
         :param client_secret: API secret
-        :type client_secret: str | unicode
         :param access_token: API access token
-        :type access_token: str | unicode
         :param api_url: (optional) API endpoint URL
                         (default: https://api.gyazo.com)
-        :type api_url: str | unicode
         :param upload_url: (optional) Upload API endpoint URL
-                        (default: https://upload.gyazo.com)
-        :type upload_url: str | unicode
+                           (default: https://upload.gyazo.com)
         """
         self.api_url = api_url
         self.upload_url = upload_url
@@ -37,12 +37,12 @@ class Api(object):
         self._access_token = access_token
 
     def get_image_list(self, page=1, per_page=20):
+        # type: (int, int) -> ImageList
         """Return a list of user's saved images
 
-        :param int page: (optional) Page number (default: 1)
-        :param int per_page: (optional) Number of images per page
-                             (default: 20, min: 1, max 100)
-        :rtype: ImageList
+        :param page: (optional) Page number (default: 1)
+        :param per_page: (optional) Number of images per page
+                         (default: 20, min: 1, max 100)
         """
         url = self.api_url + '/api/images'
         parameters = {
@@ -57,11 +57,10 @@ class Api(object):
         return images
 
     def upload_image(self, image_file):
+        # type: (BinaryIO) -> Image
         """Upload an image
 
         :param image_file: File-like object of an image file
-        :type image_file: file object
-        :rtype: Image
         """
         url = self.upload_url + '/api/upload'
         files = {
@@ -73,11 +72,10 @@ class Api(object):
         return Image.from_dict(result)
 
     def delete_image(self, image_id):
+        # type: (AnyStr) -> Image
         """Delete an image
 
         :param image_id: Image ID
-        :type image_id: str | unicode
-        :rtype: Image
         """
         url = self.api_url + '/api/images/' + image_id
         response = self._request_url(url, 'delete', with_access_token=True)
@@ -85,11 +83,10 @@ class Api(object):
         return Image.from_dict(result)
 
     def get_oembed(self, url):
+        # type: (AnyStr) -> Dict[str, Any]
         """Return an oEmbed format json dictionary
 
         :param url: Image page URL (ex. http://gyazo.com/xxxxx)
-        :type url: str | unicode
-        :rtype: dict
         """
         api_url = self.api_url + '/api/oembed'
         parameters = {
@@ -99,19 +96,21 @@ class Api(object):
         headers, result = self._parse_and_check(response)
         return result
 
-    def _request_url(self, url, method, data=None, files=None,
-                     with_client_id=False, with_access_token=False):
+    def _request_url(self,
+                     url,  # type: AnyStr
+                     method,  # type: AnyStr
+                     data=None,  # type: Dict[str, Any]
+                     files=None,  # type: Dict[str, BinaryIO]
+                     with_client_id=False,  # type: bool
+                     with_access_token=False  # type: bool
+                     ):
         """Send HTTP request
 
         :param url: URL
-        :type url: str | unicode
         :param method: HTTP method (get, post or delete)
-        :type method: str | unicode
         :param with_client_id: send request with client_id (default: false)
-        :type with_client_id: bool
         :param with_access_token: send request with with_access_token
                                   (default: false)
-        :type with_access_token: bool
         :raise GyazoError:
         """
         headers = {}
