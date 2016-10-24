@@ -33,6 +33,13 @@ Installation
 
    pip install python-gyazo
 
+Note: Please use the latest version of setuptools & pip
+
+.. code-block:: shell
+
+   pip install -U setuptools pip
+
+
 Usage
 -----
 At first, you must create an application and get an access token from https://gyazo.com/oauth/applications
