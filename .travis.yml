@@ -3,6 +3,7 @@ python:
   - 3.5
 sudo: false
 install:
+  - pip install -U pip setuptools wheel
   - pip install 'tox>=2.0,<3.0'
 script:
   - tox

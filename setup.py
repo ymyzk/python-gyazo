@@ -16,6 +16,9 @@ install_requires = [
 ]
 
 extras_require = {
+    ':python_version<"3.5"': [
+        'typing',
+    ],
     'docs': [
         'Sphinx>=1.4,<1.5',
         'sphinx_rtd_theme<0.2,>=0.1.9',
