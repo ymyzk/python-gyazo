@@ -22,7 +22,10 @@ extras_require = {
     'docs': [
         'Sphinx>=1.4,<1.5',
         'sphinx_rtd_theme<0.2,>=0.1.9',
-    ]
+    ],
+    'test:python_version<"3.3"': [
+        'mock>=2.0.0,<3.0.0',
+    ],
 }
 
 classifiers = [
