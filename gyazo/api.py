@@ -56,18 +56,41 @@ class Api(object):
         images.set_attributes_from_headers(headers)
         return images
 
-    def upload_image(self, image_file):
-        # type: (BinaryIO) -> Image
+    def upload_image(self,
+                     image_file,  # type: BinaryIO
+                     referer_url=None,  # type: AnyStr
+                     title=None,  # type: AnyStr
+                     desc=None,  # type: AnyStr
+                     created_at=None,  # type: float
+                     collection_id=None,  # type: AnyStr
+                     ):
+        # type: (...) -> Image
         """Upload an image
 
         :param image_file: File-like object of an image file
+        :param referer_url: Referer site URL
+        :param title: Site title
+        :param desc: Comment
+        :param created_at: Image's created time in unix time
+        :param collection_id: Collection ID
         """
         url = self.upload_url + '/api/upload'
+        parameters = {}
+        if referer_url is not None:
+            parameters['referer_url'] = referer_url
+        if title is not None:
+            parameters['title'] = title
+        if desc is not None:
+            parameters['desc'] = desc
+        if created_at is not None:
+            parameters['created_at'] = created_at
+        if collection_id is not None:
+            parameters['collection_id'] = collection_id
         files = {
             'imagedata': image_file
         }
         response = self._request_url(
-            url, 'post', files=files, with_access_token=True)
+            url, 'post', data=parameters, files=files, with_access_token=True)
         headers, result = self._parse_and_check(response)
         return Image.from_dict(result)
 
