@@ -47,7 +47,7 @@ classifiers = [
 
 setup(
     name='python-gyazo',
-    version='0.12.0',
+    version='0.13.0',
     description='A Python wrapper for Gyazo API',
     long_description=long_description,
     author='Yusuke Miyazaki',
