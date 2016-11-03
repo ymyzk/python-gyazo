@@ -42,7 +42,7 @@ class Api(object):
 
         :param page: (optional) Page number (default: 1)
         :param per_page: (optional) Number of images per page
-                         (default: 20, min: 1, max 100)
+                         (default: 20, min: 1, max: 100)
         """
         url = self.api_url + '/api/images'
         parameters = {
