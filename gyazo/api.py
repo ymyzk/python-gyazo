@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 import requests
 import six
-from typing import Any, AnyStr, BinaryIO, Dict  # noqa: F401
+from typing import Any, AnyStr, BinaryIO, Dict, Optional  # noqa: F401
 
 from .error import GyazoError
 from .image import Image, ImageList
@@ -21,6 +21,7 @@ class Api(object):
                  api_url='https://api.gyazo.com',  # type: AnyStr
                  upload_url='https://upload.gyazo.com'  # type: AnyStr
                  ):
+        # type: (...) -> None
         """
         :param client_id: API client ID
         :param client_secret: API secret
@@ -127,6 +128,7 @@ class Api(object):
                      with_client_id=False,  # type: bool
                      with_access_token=False  # type: bool
                      ):
+        # type: (...) -> Optional[requests.models.Response]
         """Send HTTP request
 
         :param url: URL
@@ -136,7 +138,7 @@ class Api(object):
                                   (default: false)
         :raise GyazoError:
         """
-        headers = {}
+        headers = {}  # type: Dict[str, Any]
         if data is None:
             data = {}
 

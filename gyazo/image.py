@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, division, unicode_literals
+from __future__ import absolute_import, division
 import json
 import math
+from typing import Any, Dict, List  # noqa: F401
 
 import dateutil.parser
 import dateutil.tz
@@ -33,11 +34,10 @@ class Image(object):
 
     @staticmethod
     def from_dict(data):
+        # type: (Dict[str, Any]) -> Image
         """Create a new instance from dict
 
         :param data: A JSON dict
-        :type data: dict
-        :rtype: Image
         """
         created_at = data.get('created_at', None)
         if created_at:
@@ -52,14 +52,17 @@ class Image(object):
                      url=data.get('url', None))
 
     def __str__(self):
+        # type: () -> str
         """Return a string representation of this instance"""
         return self.to_json()
 
     def __unicode__(self):
+        # type: () -> str
         """Return a string representation of this instance"""
         return self.to_json()
 
     def __or__(self, other):
+        # type: (Image) -> Image
         if isinstance(other, Image):
             attrs = (
                 'created_at',
@@ -129,10 +132,8 @@ class Image(object):
         return json.dumps(self.to_dict(), indent=indent, sort_keys=sort_keys)
 
     def to_dict(self):
-        """Return a dict representation of this instance
-
-        :rtype: dict
-        """
+        # type: () -> Dict[str, Any]
+        """Return a dict representation of this instance"""
         data = {}
 
         if self.created_at:
@@ -250,18 +251,18 @@ class ImageList(object):
         return math.ceil(self.total_count / self.per_page)
 
     def has_next_page(self):
+        # type: () -> bool
         """Whether there is a next page or not
 
         :getter: Return true if there is a next page
-        :rtype: bool
         """
         return self.current_page < math.ceil(self.total_count / self.per_page)
 
     def has_previous_page(self):
+        # type: () -> bool
         """Whether there is a previous page or not
 
         :getter: Return true if there is a previous page
-        :rtype: bool
         """
         return 0 < self.current_page
 
@@ -298,10 +299,9 @@ class ImageList(object):
 
     @staticmethod
     def from_list(data):
+        # type: (List[Dict[str, Any]]) -> ImageList
         """Create a new instance from list
 
         :param data: A JSON list
-        :type data: list
-        :rtype: ImageList
         """
         return ImageList(images=[Image.from_dict(d) for d in data])
