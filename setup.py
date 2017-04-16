@@ -23,8 +23,16 @@ extras_require = {
         'Sphinx>=1.4,<1.5',
         'sphinx_rtd_theme<0.2,>=0.1.9',
     ],
-    'test:python_version<"3.3"': [
+    'test': [
+        'coverage>=4.3.4,<5.0.0',
+        'coveralls>=1.1,<2.0',
+        'flake8>=3.3.0,<4.0.0',
+    ],
+    'test:python_version < "3.3"': [
         'mock>=2.0.0,<3.0.0',
+    ],
+    'test:python_version >= "3.3"': [
+        'mypy-lang>=0.4.6,<0.5.0',
     ],
 }
 
