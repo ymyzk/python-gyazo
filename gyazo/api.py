@@ -1,11 +1,7 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import requests
 import six
-from typing import Any, AnyStr, BinaryIO, Dict, Optional  # noqa: F401
+from typing import Any, BinaryIO, Dict, Optional  # noqa: F401
 
 from .error import GyazoError
 from .image import Image, ImageList
@@ -15,11 +11,11 @@ class Api(object):
     """A Python interface for Gyazo API"""
 
     def __init__(self,
-                 client_id=None,  # type: AnyStr
-                 client_secret=None,  # type: AnyStr
-                 access_token=None,  # type: AnyStr
-                 api_url='https://api.gyazo.com',  # type: AnyStr
-                 upload_url='https://upload.gyazo.com'  # type: AnyStr
+                 client_id=None,  # type: str
+                 client_secret=None,  # type: str
+                 access_token=None,  # type: str
+                 api_url='https://api.gyazo.com',  # type: str
+                 upload_url='https://upload.gyazo.com'  # type: str
                  ):
         # type: (...) -> None
         """
@@ -59,11 +55,11 @@ class Api(object):
 
     def upload_image(self,
                      image_file,  # type: BinaryIO
-                     referer_url=None,  # type: AnyStr
-                     title=None,  # type: AnyStr
-                     desc=None,  # type: AnyStr
+                     referer_url=None,  # type: str
+                     title=None,  # type: str
+                     desc=None,  # type: str
                      created_at=None,  # type: float
-                     collection_id=None,  # type: AnyStr
+                     collection_id=None,  # type: str
                      ):
         # type: (...) -> Image
         """Upload an image
@@ -84,7 +80,7 @@ class Api(object):
         if desc is not None:
             parameters['desc'] = desc
         if created_at is not None:
-            parameters['created_at'] = created_at
+            parameters['created_at'] = str(created_at)
         if collection_id is not None:
             parameters['collection_id'] = collection_id
         files = {
@@ -96,7 +92,7 @@ class Api(object):
         return Image.from_dict(result)
 
     def delete_image(self, image_id):
-        # type: (AnyStr) -> Image
+        # type: (str) -> Image
         """Delete an image
 
         :param image_id: Image ID
@@ -107,7 +103,7 @@ class Api(object):
         return Image.from_dict(result)
 
     def get_oembed(self, url):
-        # type: (AnyStr) -> Dict[str, Any]
+        # type: (str) -> Dict[str, Any]
         """Return an oEmbed format json dictionary
 
         :param url: Image page URL (ex. http://gyazo.com/xxxxx)
@@ -121,8 +117,8 @@ class Api(object):
         return result
 
     def _request_url(self,
-                     url,  # type: AnyStr
-                     method,  # type: AnyStr
+                     url,  # type: str
+                     method,  # type: str
                      data=None,  # type: Dict[str, Any]
                      files=None,  # type: Dict[str, BinaryIO]
                      with_client_id=False,  # type: bool
