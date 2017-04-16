@@ -14,6 +14,6 @@ matrix:
     - python: nightly
 install:
   - pip install -U pip setuptools wheel
-  - pip install 'tox>=2.0,<3.0' 'tox-travis>=0.7,<1.0'
+  - pip install 'tox>=2.0,<3.0' 'tox-travis>=0.8,<1.0'
 script:
   - tox
