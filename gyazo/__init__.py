@@ -1,10 +1,8 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from .__about__ import __version__
 from .api import Api
 from .error import GyazoError
 from .image import Image, ImageList
 
 
-__all__ = ["Api", "GyazoError", "Image", "ImageList"]
-__version__ = "0.14.0"
+__all__ = ["Api", "GyazoError", "Image", "ImageList", "__version__"]
