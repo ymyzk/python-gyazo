@@ -9,6 +9,9 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
+with open(path.join(here, 'gyazo/__about__.py')) as f:
+    exec(f.read())
+
 install_requires = [
     'python-dateutil>=2.4.2',
     'requests>=2.7.0',
@@ -56,7 +59,7 @@ classifiers = [
 
 setup(
     name='python-gyazo',
-    version='0.14.0',
+    version=__version__,
     description='A Python wrapper for Gyazo API',
     long_description=long_description,
     author='Yusuke Miyazaki',
