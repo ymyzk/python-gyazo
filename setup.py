@@ -32,7 +32,7 @@ extras_require = {
         'mock>=2.0.0,<3.0.0',
     ],
     'test:python_version >= "3.3"': [
-        'mypy-lang>=0.4.6,<0.5.0',
+        'mypy',
     ],
 }
 
