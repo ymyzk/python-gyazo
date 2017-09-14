@@ -3,6 +3,9 @@ python-gyazo
 .. image:: https://badge.fury.io/py/python-gyazo.svg
    :target: https://pypi.python.org/pypi/python-gyazo/
    :alt: PyPI version
+.. image:: https://img.shields.io/pypi/pyversions/python-gyazo.svg
+   :target: https://pypi.python.org/pypi/kawasemi/
+   :alt: PyPI Python versions
 .. image:: https://travis-ci.org/ymyzk/python-gyazo.svg?branch=master
    :target: https://travis-ci.org/ymyzk/python-gyazo
    :alt: Build Status
