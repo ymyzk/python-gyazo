@@ -23,8 +23,8 @@ extras_require = {
         'typing',
     ],
     'docs': [
-        'Sphinx>=1.4,<1.5',
-        'sphinx_rtd_theme<0.2,>=0.1.9',
+        'Sphinx>=1.6,<1.7',
+        'sphinx_rtd_theme>=0.2.4,<0.3',
     ],
     'test': [
         'coverage>=4.3.4,<5.0.0',
