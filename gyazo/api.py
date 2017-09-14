@@ -151,7 +151,10 @@ class Api(object):
                 raise GyazoError(six.text_type(e))
         elif method == 'post':
             try:
-                return requests.post(url, data=data, files=files,
+                # stub in typeshed is wrong!
+                return requests.post(url,  # type: ignore
+                                     data=data,
+                                     files=files,
                                      headers=headers)
             except requests.RequestException as e:
                 raise GyazoError(six.text_type(e))
