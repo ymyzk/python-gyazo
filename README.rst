@@ -49,8 +49,6 @@ At first, you must create an application and get an access token from https://gy
 
 .. code-block:: python
 
-   from __future__ import print_function
-
    from gyazo import Api
 
 
