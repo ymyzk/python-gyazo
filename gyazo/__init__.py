@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from .__about__ import __version__
 from .api import Api
 from .error import GyazoError
