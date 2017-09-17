@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
+from typing import Any, Dict  # noqa: F401
+
 import requests
-import six
-from typing import Any, BinaryIO, Dict, Optional  # noqa: F401
 
 from .error import GyazoError
 from .image import Image, ImageList
@@ -11,13 +10,11 @@ class Api(object):
     """A Python interface for Gyazo API"""
 
     def __init__(self,
-                 client_id=None,  # type: str
-                 client_secret=None,  # type: str
-                 access_token=None,  # type: str
-                 api_url='https://api.gyazo.com',  # type: str
-                 upload_url='https://upload.gyazo.com'  # type: str
-                 ):
-        # type: (...) -> None
+                 client_id=None,
+                 client_secret=None,
+                 access_token=None,
+                 api_url='https://api.gyazo.com',
+                 upload_url='https://upload.gyazo.com'):
         """
         :param client_id: API client ID
         :param client_secret: API secret
@@ -34,7 +31,6 @@ class Api(object):
         self._access_token = access_token
 
     def get_image_list(self, page=1, per_page=20):
-        # type: (int, int) -> ImageList
         """Return a list of user's saved images
 
         :param page: (optional) Page number (default: 1)
@@ -42,26 +38,24 @@ class Api(object):
                          (default: 20, min: 1, max: 100)
         """
         url = self.api_url + '/api/images'
-        parameters = {
+        params = {
             'page': page,
             'per_page': per_page
         }
         response = self._request_url(
-            url, 'get', parameters, with_access_token=True)
+            url, 'get', params=params, with_access_token=True)
         headers, result = self._parse_and_check(response)
         images = ImageList.from_list(result)
         images.set_attributes_from_headers(headers)
         return images
 
     def upload_image(self,
-                     image_file,  # type: BinaryIO
-                     referer_url=None,  # type: str
-                     title=None,  # type: str
-                     desc=None,  # type: str
-                     created_at=None,  # type: float
-                     collection_id=None,  # type: str
-                     ):
-        # type: (...) -> Image
+                     image_file,
+                     referer_url=None,
+                     title=None,
+                     desc=None,
+                     created_at=None,
+                     collection_id=None):
         """Upload an image
 
         :param image_file: File-like object of an image file
@@ -72,27 +66,26 @@ class Api(object):
         :param collection_id: Collection ID
         """
         url = self.upload_url + '/api/upload'
-        parameters = {}
+        data = {}
         if referer_url is not None:
-            parameters['referer_url'] = referer_url
+            data['referer_url'] = referer_url
         if title is not None:
-            parameters['title'] = title
+            data['title'] = title
         if desc is not None:
-            parameters['desc'] = desc
+            data['desc'] = desc
         if created_at is not None:
-            parameters['created_at'] = str(created_at)
+            data['created_at'] = str(created_at)
         if collection_id is not None:
-            parameters['collection_id'] = collection_id
+            data['collection_id'] = collection_id
         files = {
             'imagedata': image_file
         }
         response = self._request_url(
-            url, 'post', data=parameters, files=files, with_access_token=True)
+            url, 'post', data=data, files=files, with_access_token=True)
         headers, result = self._parse_and_check(response)
         return Image.from_dict(result)
 
     def delete_image(self, image_id):
-        # type: (str) -> Image
         """Delete an image
 
         :param image_id: Image ID
@@ -103,7 +96,6 @@ class Api(object):
         return Image.from_dict(result)
 
     def get_oembed(self, url):
-        # type: (str) -> Dict[str, Any]
         """Return an oEmbed format json dictionary
 
         :param url: Image page URL (ex. http://gyazo.com/xxxxx)
@@ -112,19 +104,18 @@ class Api(object):
         parameters = {
             'url': url
         }
-        response = self._request_url(api_url, 'get', parameters)
+        response = self._request_url(api_url, 'get', params=parameters)
         headers, result = self._parse_and_check(response)
         return result
 
     def _request_url(self,
-                     url,  # type: str
-                     method,  # type: str
-                     data=None,  # type: Dict[str, Any]
-                     files=None,  # type: Dict[str, BinaryIO]
-                     with_client_id=False,  # type: bool
-                     with_access_token=False  # type: bool
-                     ):
-        # type: (...) -> Optional[requests.models.Response]
+                     url,
+                     method,
+                     params=None,
+                     data=None,
+                     files=None,
+                     with_client_id=False,
+                     with_access_token=False):
         """Send HTTP request
 
         :param url: URL
@@ -144,28 +135,14 @@ class Api(object):
         if with_access_token and self._access_token is not None:
             data['access_token'] = self._access_token
 
-        if method == 'get':
-            try:
-                return requests.get(url, params=data, headers=headers)
-            except requests.RequestException as e:
-                raise GyazoError(six.text_type(e))
-        elif method == 'post':
-            try:
-                # stub in typeshed is wrong!
-                return requests.post(url,  # type: ignore
-                                     data=data,
-                                     files=files,
-                                     headers=headers)
-            except requests.RequestException as e:
-                raise GyazoError(six.text_type(e))
-        elif method == 'delete':
-            try:
-                return requests.delete(url, params=data, headers=headers)
-            except requests.RequestException as e:
-                raise GyazoError(six.text_type(e))
-
-        # Unsupported method
-        return None
+        try:
+            return requests.request(method, url,
+                                    params=params,
+                                    data=data,
+                                    files=files,
+                                    headers=headers)
+        except requests.RequestException as e:
+            raise GyazoError(str(e))
 
     def _parse_and_check(self, data):
         try:

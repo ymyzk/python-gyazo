@@ -15,11 +15,10 @@ with open(path.join(here, 'gyazo/__about__.py')) as f:
 install_requires = [
     'python-dateutil>=2.4.2',
     'requests>=2.7.0',
-    'six>=1.9.0',
 ]
 
 extras_require = {
-    ':python_version<"3.5"': [
+    ':python_version < "3.5"': [
         'typing',
     ],
     'docs': [
