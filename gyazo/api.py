@@ -128,12 +128,14 @@ class Api(object):
         headers = {}  # type: Dict[str, Any]
         if data is None:
             data = {}
+        if params is None:
+            params = {}
 
         if with_client_id and self._client_id is not None:
-            data['client_id'] = self._client_id
+            params['client_id'] = self._client_id
 
         if with_access_token and self._access_token is not None:
-            data['access_token'] = self._access_token
+            headers['Authorization'] = "Bearer " + self._access_token
 
         try:
             return requests.request(method, url,
