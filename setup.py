@@ -25,6 +25,9 @@ extras_require = {
         'Sphinx>=1.6,<1.7',
         'sphinx_rtd_theme>=0.2.4,<0.3',
     ],
+    'mypy:python_version >= "3.3"': [
+        'mypy',
+    ],
     'test': [
         'coverage>=4.3.4,<5.0.0',
         'coveralls>=1.1,<2.0',
@@ -32,9 +35,6 @@ extras_require = {
     ],
     'test:python_version < "3.3"': [
         'mock>=2.0.0,<3.0.0',
-    ],
-    'test:python_version >= "3.3"': [
-        'mypy',
     ],
 }
 

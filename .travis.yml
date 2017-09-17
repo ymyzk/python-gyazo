@@ -7,7 +7,7 @@ python:
   - 3.6
   - nightly
   - pypy
-  # - pypy3.3-5.5-alpha
+  - pypy3
 sudo: false
 matrix:
   allow_failures:
