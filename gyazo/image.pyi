@@ -1,6 +1,6 @@
 from datetime import datetime
-from typing import (Any, Dict, Iterable, Iterator, List, Mapping, Optional,
-                    Union)
+from typing import (Any, Dict, Iterable, List, Mapping, MutableMapping,
+                    Optional, Union)
 
 
 class Image:
@@ -13,7 +13,7 @@ class Image:
 
     def __init__(self, **kwargs: Any) -> None: ...  # TODO
     @staticmethod
-    def from_dict(data: Mapping[str, Any]) -> Image: ...
+    def from_dict(data: MutableMapping[str, Any]) -> Image: ...
     def __str__(self) -> str: ...
     def __unicode__(self) -> Any: ...  # TODO
     def __or__(self, other: Image) -> Image: ...
