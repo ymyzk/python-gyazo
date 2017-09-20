@@ -7,8 +7,6 @@ class Image:
     created_at: datetime
     image_id: Optional[str]
     permalink_url: Optional[str]
-    # NOTE: This field may be removed from API?
-    star: Optional[bool]
     thumb_url = str
     type = str
     url = Optional[str]

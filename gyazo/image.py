@@ -19,8 +19,6 @@ class Image(object):
         self.image_id = kwargs.get('image_id')
         #: A permalink URL
         self.permalink_url = kwargs.get('permalink_url')
-        #: An image is stared or not (bool)
-        self.star = kwargs.get('star')
         #: A thumbnail URL
         self.thumb_url = kwargs['thumb_url']
         #: A type of the image
@@ -41,7 +39,6 @@ class Image(object):
         return Image(created_at=created_at,
                      image_id=data.get('image_id', None),
                      permalink_url=data.get('permalink_url', None),
-                     star=data.get('star', None),
                      thumb_url=data.get('thumb_url', None),
                      type=data.get('type', None),
                      url=data.get('url', None))
@@ -62,7 +59,6 @@ class Image(object):
             'created_at',
             'image_id',
             'permalink_url',
-            'star',
             'thumb_url',
             'type',
             'url'
@@ -125,8 +121,6 @@ class Image(object):
             data['image_id'] = self.image_id
         if self.permalink_url:
             data['permalink_url'] = self.permalink_url
-        if self.star:
-            data['star'] = self.star
         if self.thumb_url:
             data['thumb_url'] = self.thumb_url
         if self.type:
