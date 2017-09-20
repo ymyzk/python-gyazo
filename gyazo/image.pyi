@@ -1,6 +1,6 @@
 from datetime import datetime
-from typing import (Any, Dict, Iterable, Iterator, List, Mapping,
-                    MutableMapping, Optional, Union)
+from typing import (Any, Dict, Iterable, List, Mapping, MutableMapping,
+                    Optional, Union)
 
 
 class Image:
