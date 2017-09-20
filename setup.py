@@ -25,7 +25,7 @@ extras_require = {
         'Sphinx>=1.6,<1.7',
         'sphinx_rtd_theme>=0.2.4,<0.3',
     ],
-    'mypy:python_version >= "3.3"': [
+    'mypy:python_version >= "3.4"': [
         'mypy',
     ],
     'test': [
@@ -47,7 +47,6 @@ classifiers = [
     'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.3',
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
