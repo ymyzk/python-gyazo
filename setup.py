@@ -12,6 +12,10 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 with open(path.join(here, 'gyazo/__about__.py')) as f:
     exec(f.read())
 
+package_data = {
+    'gyazo': ['*.pyi'],
+}
+
 install_requires = [
     'python-dateutil>=2.4.2',
     'requests>=2.7.0',
@@ -65,6 +69,7 @@ setup(
     url='https://github.com/ymyzk/python-gyazo',
     license='MIT',
     packages=['gyazo'],
+    package_data=package_data,
     test_suite='tests',
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, <4',
     install_requires=install_requires,
