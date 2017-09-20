@@ -71,7 +71,7 @@ setup(
     packages=['gyazo'],
     package_data=package_data,
     test_suite='tests',
-    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, <4',
+    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4',
     install_requires=install_requires,
     extras_require=extras_require,
     classifiers=classifiers,
