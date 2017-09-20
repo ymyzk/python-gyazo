@@ -1,4 +1,5 @@
 from __future__ import division
+from copy import deepcopy
 import json
 import math
 
@@ -32,16 +33,13 @@ class Image(object):
 
         :param data: A JSON dict
         """
-        created_at = data.get('created_at', None)
-        if created_at:
-            created_at = dateutil.parser.parse(created_at)
+        data = deepcopy(data)
 
-        return Image(created_at=created_at,
-                     image_id=data.get('image_id', None),
-                     permalink_url=data.get('permalink_url', None),
-                     thumb_url=data.get('thumb_url', None),
-                     type=data.get('type', None),
-                     url=data.get('url', None))
+        created_at = data.get('created_at', None)
+        if created_at is not None:
+            data['created_at'] = dateutil.parser.parse(created_at)
+
+        return Image(**data)
 
     def __str__(self):
         """Return a string representation of this instance"""

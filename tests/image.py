@@ -48,6 +48,11 @@ class TestImage(unittest.TestCase):
         for sample in self.samples:
             image = Image.from_dict(sample)
             self.assertIsNotNone(image)
+            self.assertEqual(image.url, sample['url'])
+            self.assertEqual(image.image_id, sample['image_id'])
+            self.assertEqual(image.type, sample['type'])
+            self.assertEqual(image.thumb_url, sample['thumb_url'])
+            self.assertEqual(image.permalink_url, sample['permalink_url'])
 
     def test_to_dict(self):
         for sample in self.samples:
