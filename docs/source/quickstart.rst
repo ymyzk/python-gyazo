@@ -23,10 +23,10 @@ At first, you must create an application and get an access token from https://gy
    from gyazo import Api
 
 
-   api = Api(access_token='YOUR_ACCESS_TOKEN')
+   client = Api(access_token='YOUR_ACCESS_TOKEN')
 
    ### Get a list of images
-   images = api.get_image_list()
+   images = client.get_image_list()
    for image in images:
        print(str(image))
 
@@ -42,12 +42,12 @@ At first, you must create an application and get an access token from https://gy
 
    ### Upload an image
    with open('sample.png', 'rb') as f:
-       image = api.upload_image(f)
+       image = client.upload_image(f)
        print(image.to_json())
 
    ### Delete an image
-   api.delete_image('IMAGE_ID')
+   client.delete_image('IMAGE_ID')
 
    ### oEmbed
    image = images[0]
-   print(api.get_oembed(image.permalink_url))
+   print(client.get_oembed(image.permalink_url))
