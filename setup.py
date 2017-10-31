@@ -45,8 +45,8 @@ extras_require = {
 classifiers = [
     'Development Status :: 4 - Beta',
     'Intended Audience :: Developers',
-    'Operating System :: OS Independent',
     'License :: OSI Approved :: MIT License',
+    'Operating System :: OS Independent',
     'Programming Language :: Python',
     'Programming Language :: Python :: 2',
     'Programming Language :: Python :: 2.7',
@@ -57,7 +57,6 @@ classifiers = [
     'Programming Language :: Python :: Implementation :: CPython',
     'Programming Language :: Python :: Implementation :: PyPy',
     'Topic :: Internet',
-    'Topic :: Software Development :: Libraries :: Python Modules',
 ]
 
 setup(
