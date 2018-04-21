@@ -27,7 +27,7 @@ extras_require = {
     ],
     'docs': [
         'Sphinx>=1.7,<1.8',
-        'sphinx_rtd_theme>=0.2.4,<0.3',
+        'sphinx_rtd_theme>=0.3.0,<0.4',
     ],
     'mypy:python_version >= "3.4"': [
         'mypy',
