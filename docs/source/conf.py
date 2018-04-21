@@ -58,7 +58,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'python-gyazo'
-copyright = '2014-2017, Yusuke Miyazaki'
+copyright = '2014-2018, Yusuke Miyazaki'
 author = 'Yusuke Miyazaki'
 
 # The version info for the project you're documenting, acts as replacement for
