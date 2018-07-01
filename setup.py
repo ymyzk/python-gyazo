@@ -67,6 +67,10 @@ setup(
     author='Yusuke Miyazaki',
     author_email='miyazaki.dev@gmail.com',
     url='https://github.com/ymyzk/python-gyazo',
+    project_urls={
+        'Bug Reports': 'https://github.com/ymyzk/python-gyazo/issues',
+        'Source': 'https://github.com/ymyzk/python-gyazo',
+    },
     license='MIT',
     packages=['gyazo'],
     package_data=package_data,
@@ -75,4 +79,5 @@ setup(
     install_requires=install_requires,
     extras_require=extras_require,
     classifiers=classifiers,
+    keywords='gyazo',
 )
