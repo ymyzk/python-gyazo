@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-from codecs import open
+from io import open  # For Python 2
 from os import path
 
 from setuptools import setup
