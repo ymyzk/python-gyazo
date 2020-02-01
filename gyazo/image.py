@@ -47,6 +47,11 @@ class Image:
         """Return a string representation of this instance"""
         return self.to_json()
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Image):
+            return NotImplemented
+        return self.__dict__ == other.__dict__
+
     def __or__(self, other: 'Image') -> 'Image':
         if not isinstance(other, Image):
             return NotImplemented
