@@ -1,7 +1,9 @@
-from __future__ import division
 from copy import deepcopy
+from datetime import datetime
 import json
 import math
+from typing import (Any, Dict, Iterable, Iterator, List, Mapping,
+                    MutableMapping, Optional, Union)
 
 import dateutil.parser
 import dateutil.tz
@@ -10,25 +12,25 @@ import requests
 from .error import GyazoError
 
 
-class Image(object):
+class Image:
     """A class representing an image of Gyazo"""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         #: The time this image was created
-        self.created_at = kwargs['created_at']
+        self.created_at = kwargs['created_at']  # type: datetime
         #: An image ID
-        self.image_id = kwargs.get('image_id')
+        self.image_id = kwargs.get('image_id')  # type: Optional[str]
         #: A permalink URL
-        self.permalink_url = kwargs.get('permalink_url')
+        self.permalink_url = kwargs.get('permalink_url')  # type: Optional[str]
         #: A thumbnail URL
-        self.thumb_url = kwargs['thumb_url']
+        self.thumb_url = kwargs['thumb_url']  # type: str
         #: A type of the image
-        self.type = kwargs['type']
+        self.type = kwargs['type']  # type: str
         #: An image URL
-        self.url = kwargs.get('url')
+        self.url = kwargs.get('url')  # type: Optional[str]
 
     @staticmethod
-    def from_dict(data):
+    def from_dict(data: MutableMapping[str, Any]) -> 'Image':
         """Create a new instance from dict
 
         :param data: A JSON dict
@@ -41,15 +43,11 @@ class Image(object):
 
         return Image(**data)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return a string representation of this instance"""
         return self.to_json()
 
-    def __unicode__(self):
-        """Return a string representation of this instance"""
-        return self.to_json()
-
-    def __or__(self, other):
+    def __or__(self, other: 'Image') -> 'Image':
         if not isinstance(other, Image):
             return NotImplemented
 
@@ -74,7 +72,7 @@ class Image(object):
         return Image(**kwargs)
 
     @property
-    def filename(self):
+    def filename(self) -> Optional[str]:
         """An image filename
 
         :getter: Return an image filename if it exists
@@ -84,7 +82,7 @@ class Image(object):
         return None
 
     @property
-    def thumb_filename(self):
+    def thumb_filename(self) -> str:
         """A thumbnail image filename
 
         :getter: Return a thumbnail filename
@@ -92,14 +90,16 @@ class Image(object):
         return self.thumb_url.split('/')[-1]
 
     @property
-    def local_created_at(self):
+    def local_created_at(self) -> datetime:
         """The time this image was created in local time zone
 
         :getter: Return the time this image was created in local time zone
         """
         return self.created_at.astimezone(dateutil.tz.tzlocal())
 
-    def to_json(self, indent=None, sort_keys=True):
+    def to_json(self,
+                indent: Optional[Union[int, str]] = None,
+                sort_keys: bool = True) -> str:
         """Return a JSON string representation of this instance
 
         :param indent: specify an indent level or a string used to indent each
@@ -108,7 +108,7 @@ class Image(object):
         """
         return json.dumps(self.to_dict(), indent=indent, sort_keys=sort_keys)
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
         """Return a dict representation of this instance"""
         data = {}
 
@@ -128,7 +128,7 @@ class Image(object):
 
         return data
 
-    def download(self):
+    def download(self) -> Optional[bytes]:
         """Download an image file if it exists
 
         :raise GyazoError:
@@ -140,7 +140,7 @@ class Image(object):
                 raise GyazoError(str(e))
         return None
 
-    def download_thumb(self):
+    def download_thumb(self) -> bytes:
         """Download a thumbnail image file
 
         :raise GyazoError:
@@ -151,82 +151,98 @@ class Image(object):
             raise GyazoError(str(e))
 
 
-class ImageList(object):
+class ImageList:
     """A class representing a list of gyazo.Image"""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         #: The number of images
-        self.total_count = kwargs.get('total_count')
+        self.total_count = kwargs.get('total_count')  # type: Optional[int]
         #: Current page number
-        self.current_page = kwargs.get('current_page')
+        self.current_page = kwargs.get('current_page')  # type: Optional[int]
         #: The number of images per page
-        self.per_page = kwargs.get('per_page')
+        self.per_page = kwargs.get('per_page')  # type: Optional[int]
         #: User type
-        self.user_type = kwargs.get('user_type')
+        self.user_type = kwargs.get('user_type')  # type: Optional[str]
         #: List of images
-        self.images = kwargs.get('images', [])
+        self.images = kwargs.get('images', [])  # type: List[Image]
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.images)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: int) -> Image:
         return self.images[key]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: int, value: Image) -> None:
         self.images[key] = value
 
-    def __delitem__(self, key):
+    def __delitem__(self, key: int) -> None:
         del self.images[key]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Image]:
         return self.images.__iter__()
 
-    def __add__(self, other):
+    def __add__(self, other: 'ImageList') -> 'ImageList':
         if isinstance(other, ImageList):
             images = self.images + other.images
             return ImageList(images=images, total_count=len(images))
         return NotImplemented
 
     @property
-    def num_pages(self):
+    def num_pages(self) -> Optional[int]:
         """The number of pages
 
         :getter: Return the number of pages
         """
-        return math.ceil(self.total_count / self.per_page)
+        if self.total_count is not None and self.per_page is not None:
+            return math.ceil(self.total_count / self.per_page)
+        else:
+            return None
 
-    def has_next_page(self):
+    def has_next_page(self) -> Optional[bool]:
         """Whether there is a next page or not
 
         :getter: Return true if there is a next page
         """
-        return self.current_page < math.ceil(self.total_count / self.per_page)
+        if (
+                self.current_page is not None
+                and self.total_count is not None
+                and self.per_page is not None
+        ):
+            num_pages = math.ceil(self.total_count / self.per_page)
+            return self.current_page < num_pages
+        else:
+            return None
 
-    def has_previous_page(self):
+    def has_previous_page(self) -> Optional[bool]:
         """Whether there is a previous page or not
 
         :getter: Return true if there is a previous page
         """
-        return 0 < self.current_page
+        if self.current_page is not None:
+            return 0 < self.current_page
+        else:
+            return None
 
-    def set_attributes_from_headers(self, headers):
+    def set_attributes_from_headers(self, headers: Mapping[str, str]) -> None:
         """Set instance attributes with HTTP header
 
         :param headers: HTTP header
         """
-        self.total_count = headers.get('x-total-count', None)
-        self.current_page = headers.get('x-current-page', None)
-        self.per_page = headers.get('x-per-page', None)
+        total_count = headers.get('x-total-count', None)
+        current_page = headers.get('x-current-page', None)
+        per_page = headers.get('x-per-page', None)
         self.user_type = headers.get('x-user-type', None)
 
         if self.total_count:
-            self.total_count = int(self.total_count)
+            self.total_count = int(str(total_count))
         if self.current_page:
-            self.current_page = int(self.current_page)
+            self.current_page = int(str(current_page))
         if self.per_page:
-            self.per_page = int(self.per_page)
+            self.per_page = int(str(per_page))
 
-    def to_json(self, indent=None, sort_keys=True):
+    def to_json(self,
+                indent: Optional[Union[int, str]] = None,
+                sort_keys: bool = True) -> str:
         """Return a JSON string representation of this instance
 
         :param indent: specify an indent level or a string used to indent each
@@ -237,7 +253,7 @@ class ImageList(object):
                           indent=indent, sort_keys=sort_keys)
 
     @staticmethod
-    def from_list(data):
+    def from_list(data: Iterable[MutableMapping[str, Any]]) -> 'ImageList':
         """Create a new instance from list
 
         :param data: A JSON list

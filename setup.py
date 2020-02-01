@@ -11,7 +11,7 @@ with open(path.join(here, 'gyazo/__about__.py')) as f:
     exec(f.read())
 
 package_data = {
-    'gyazo': ['py.typed', '*.pyi'],
+    'gyazo': ['py.typed'],
 }
 
 install_requires = [
