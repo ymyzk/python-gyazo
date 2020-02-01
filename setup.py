@@ -1,4 +1,3 @@
-from io import open  # For Python 2
 from os import path
 
 from setuptools import setup
@@ -16,28 +15,22 @@ package_data = {
 }
 
 install_requires = [
-    'python-dateutil>=2.4.2',
-    'requests>=2.7.0',
+    'python-dateutil>=2.4',
+    'requests>=2.7',
 ]
 
 extras_require = {
-    ':python_version < "3.5"': [
-        'typing',
-    ],
     'docs': [
-        'Sphinx>=1.7,<1.8',
-        'sphinx_rtd_theme>=0.3.0,<0.4',
+        'Sphinx>=2.3,<3',
+        'sphinx_rtd_theme>=0.4,<1',
     ],
-    'mypy:python_version >= "3.4"': [
+    'mypy': [
         'mypy',
     ],
     'test': [
-        'coverage>=4.3.4,<5.0.0',
+        'coverage>=5,<6',
         'coveralls>=1.1,<2.0',
-        'flake8>=3.3.0,<4.0.0',
-    ],
-    'test:python_version < "3.3"': [
-        'mock>=2.0.0,<3.0.0',
+        'flake8>=3.3,<4',
     ],
 }
 
@@ -47,14 +40,12 @@ classifiers = [
     'License :: OSI Approved :: MIT License',
     'Operating System :: OS Independent',
     'Programming Language :: Python',
-    'Programming Language :: Python :: 2',
-    'Programming Language :: Python :: 2.7',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3 :: Only'
     'Topic :: Internet',
 ]
 
@@ -73,7 +64,7 @@ setup(
     license='MIT',
     packages=['gyazo'],
     package_data=package_data,
-    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4',
+    python_requires='>=3.5, <4',
     install_requires=install_requires,
     extras_require=extras_require,
     classifiers=classifiers,
