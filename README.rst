@@ -9,7 +9,7 @@ python-gyazo
 .. image:: https://travis-ci.org/ymyzk/python-gyazo.svg?branch=master
    :target: https://travis-ci.org/ymyzk/python-gyazo
    :alt: Build Status
-.. image:: https://readthedocs.org/projects/python-gyazo/badge/?version=master
+.. image:: https://readthedocs.org/projects/python-gyazo/badge/?version=latest
    :target: https://python-gyazo.readthedocs.io/
    :alt: Documentation Status
 .. image:: https://codeclimate.com/github/ymyzk/python-gyazo/badges/gpa.svg
