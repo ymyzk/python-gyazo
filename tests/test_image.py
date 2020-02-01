@@ -67,8 +67,7 @@ image_3 = Image(
 test_data_from_dict = [
     (image_1_dict, image_1),
     (image_2_dict, image_2),
-    # TODO: prefer empty string or None?
-    (image_2_dict_empty_str, image_2_empty_str),
+    (image_2_dict_empty_str, image_2),
 ]
 
 test_data_to_dict = [
@@ -133,27 +132,26 @@ class TestImage:
 class TestImageList:
     def test_from_list(self):
         l = ImageList.from_list([image_1_dict, image_2_dict, image_2_dict_empty_str])
-        assert l.images == [image_1, image_2, image_2_empty_str]
+        assert l.images == [image_1, image_2, image_2]
 
     @pytest.mark.parametrize("image_list,expected", [
-        (ImageList(total_count=23, per_page=10, current_page=0), True),
+        (ImageList(total_count=23, per_page=10, current_page=0), False),
         (ImageList(total_count=23, per_page=10, current_page=3), False),
         (ImageList(total_count=20, per_page=10, current_page=1), True),
-        (ImageList(total_count=20, per_page=10, current_page=3), False),
         (ImageList(total_count=20, per_page=10), None),
         (ImageList(total_count=20, current_page=3), None),
         (ImageList(per_page=10, current_page=3), None),
     ])
     def test_has_next_page(self, image_list, expected):
-        assert image_list.has_next_page() == expected
+        assert image_list.has_next_page == expected
 
     @pytest.mark.parametrize("image_list,expected", [
-        (ImageList(current_page=1), True),
-        (ImageList(current_page=0), False),
+        (ImageList(current_page=2), True),
+        (ImageList(current_page=1), False),
         (ImageList(), None),
     ])
     def test_has_previous_page(self, image_list, expected):
-        assert image_list.has_previous_page() == expected
+        assert image_list.has_previous_page == expected
 
     def test_add(self):
         l1 = ImageList(images=[image_1, image_2])
@@ -164,3 +162,20 @@ class TestImageList:
         assert l.current_page is None
         assert l.per_page is None
         assert l.user_type is None
+
+    def test_set_attributes_from_headers(self):
+        headers = {
+            'server': 'nginx/1.11.9',
+            'date': 'Sat, 01 Feb 2020 16:43:58 GMT',
+            'content-type': 'application/json; charset=utf-8',
+            'x-total-count': '1144',
+            'x-current-page': '1',
+            'x-per-page': '20',
+            'x-user-type': 'ninja',
+        }
+        il = ImageList()
+        il.set_attributes_from_headers(headers)
+        assert il.total_count == 1144
+        assert il.current_page == 1
+        assert il.per_page == 20
+        assert il.user_type == 'ninja'
