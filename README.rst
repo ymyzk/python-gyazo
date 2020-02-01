@@ -19,7 +19,6 @@ python-gyazo
    :target: https://coveralls.io/r/ymyzk/python-gyazo?branch=master
    :alt: Coverage Status
 
-TODO mypy badge
 A Python wrapper for Gyazo API.
 
 The full-documentation is available on `Read the Docs`_.

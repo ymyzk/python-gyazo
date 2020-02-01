@@ -1,36 +1,37 @@
-from typing import Any, Dict  # noqa: F401
+from typing import Any, BinaryIO, Dict, MutableMapping, Optional, Tuple
 
 import requests
+from requests.models import Response
 
 from .error import GyazoError
 from .image import Image, ImageList
 
 
-class Api(object):
+class Api:
     """A Python interface for Gyazo API"""
 
     def __init__(self,
-                 client_id=None,
-                 client_secret=None,
-                 access_token=None,
-                 api_url='https://api.gyazo.com',
-                 upload_url='https://upload.gyazo.com'):
+                 client_id: Optional[str] = None,
+                 client_secret: Optional[str] = None,
+                 access_token: Optional[str] = None,
+                 api_url: str = 'https://api.gyazo.com',
+                 upload_url: str = 'https://upload.gyazo.com') -> None:
         """
-        :param client_id: API client ID
-        :param client_secret: API secret
-        :param access_token: API access token
+        :param client_id: (optional) API client ID
+        :param client_secret: (optional) API secret
+        :param access_token: (optional) API access token
         :param api_url: (optional) API endpoint URL
                         (default: https://api.gyazo.com)
         :param upload_url: (optional) Upload API endpoint URL
                            (default: https://upload.gyazo.com)
         """
-        self.api_url = api_url
-        self.upload_url = upload_url
-        self._client_id = client_id
-        self._client_secret = client_secret
-        self._access_token = access_token
+        self.api_url = api_url  # type: str
+        self.upload_url = upload_url  # type: str
+        self._client_id = client_id  # type: Optional[str]
+        self._client_secret = client_secret  # type: Optional[str]
+        self._access_token = access_token  # type: Optional[str]
 
-    def get_image_list(self, page=1, per_page=20):
+    def get_image_list(self, page: int = 1, per_page: int = 20) -> ImageList:
         """Return a list of user's saved images
 
         :param page: (optional) Page number (default: 1)
@@ -50,12 +51,13 @@ class Api(object):
         return images
 
     def upload_image(self,
-                     image_file,
-                     referer_url=None,
-                     title=None,
-                     desc=None,
-                     created_at=None,
-                     collection_id=None):
+                     image_file: BinaryIO,
+                     referer_url: Optional[str] = None,
+                     title: Optional[str] = None,
+                     desc: Optional[str] = None,
+
+                     created_at: Optional[float] = None,
+                     collection_id: Optional[str] = None) -> Image:
         """Upload an image
 
         :param image_file: File-like object of an image file
@@ -85,7 +87,7 @@ class Api(object):
         headers, result = self._parse_and_check(response)
         return Image.from_dict(result)
 
-    def delete_image(self, image_id):
+    def delete_image(self, image_id: str) -> Image:
         """Delete an image
 
         :param image_id: Image ID
@@ -95,7 +97,7 @@ class Api(object):
         headers, result = self._parse_and_check(response)
         return Image.from_dict(result)
 
-    def get_oembed(self, url):
+    def get_oembed(self, url: str) -> Dict[str, Any]:
         """Return an oEmbed format json dictionary
 
         :param url: Image page URL (ex. http://gyazo.com/xxxxx)
@@ -105,17 +107,19 @@ class Api(object):
             'url': url
         }
         response = self._request_url(api_url, 'get', params=parameters)
-        headers, result = self._parse_and_check(response)
+        _, result = (
+            self._parse_and_check(response)
+        )  # type: Tuple[Any, Dict[str, Any]]
         return result
 
     def _request_url(self,
-                     url,
-                     method,
-                     params=None,
-                     data=None,
-                     files=None,
-                     with_client_id=False,
-                     with_access_token=False):
+                     url: str,
+                     method: str,
+                     params: Optional[Dict[str, Any]] = None,
+                     data: Optional[Dict[str, Any]] = None,
+                     files: Optional[Dict[str, BinaryIO]] = None,
+                     with_client_id: bool = False,
+                     with_access_token: bool = False) -> Response:
         """Send HTTP request
 
         :param url: URL
@@ -146,7 +150,10 @@ class Api(object):
         except requests.RequestException as e:
             raise GyazoError(str(e))
 
-    def _parse_and_check(self, data):
+    def _parse_and_check(
+            self,
+            data: Response
+    ) -> Tuple[MutableMapping[str, str], Any]:
         try:
             headers = data.headers
             json_data = data.json()
