@@ -19,7 +19,7 @@ python-gyazo
    :target: https://coveralls.io/r/ymyzk/python-gyazo?branch=master
    :alt: Coverage Status
 
-A Python wrapper for Gyazo API.
+A Python wrapper for `Gyazo API`_.
 
 The full-documentation is available on `Read the Docs`_.
 
@@ -87,5 +87,6 @@ License
 MIT License. Please see `LICENSE`_.
 
 .. _Read the Docs: https://python-gyazo.readthedocs.io/
+.. _Gyazo API: https://gyazo.com/api?lang=ja
 .. _python-gyazo-backup: https://github.com/ymyzk/python-gyazo-backup
 .. _LICENSE: LICENSE
