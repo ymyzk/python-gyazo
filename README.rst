@@ -12,9 +12,6 @@ python-gyazo
 .. image:: https://readthedocs.org/projects/python-gyazo/badge/?version=latest
    :target: https://python-gyazo.readthedocs.io/
    :alt: Documentation Status
-.. image:: https://codeclimate.com/github/ymyzk/python-gyazo/badges/gpa.svg
-   :target: https://codeclimate.com/github/ymyzk/python-gyazo
-   :alt: Code Climate
 .. image:: https://coveralls.io/repos/ymyzk/python-gyazo/badge.svg?branch=master
    :target: https://coveralls.io/r/ymyzk/python-gyazo?branch=master
    :alt: Coverage Status
