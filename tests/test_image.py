@@ -63,17 +63,49 @@ image_3 = Image(
     thumb_url='https://i.gyazo.com/thumb/180/_eadaaad52408b1e53c09111d6959139f.png',
     permalink_url='http://gyazo.com/9d04d2da1b4daaaa234c68b5219dc1e3'
 )
+image_4 = Image(
+    image_id='14aa1dedcbafaa069943c3cf0631d5e5',
+    type='png',
+    created_at=datetime(2020, 2, 1, 13, 31, 37, 197000, tzinfo=timezone.utc),
+    ocr={
+        'locale': 'ja',
+        'description': 'OCRの結果が\n入ってる',
+    },
+)
+image_4_dict = {
+    'image_id': '14aa1dedcbafaa069943c3cf0631d5e5',
+    'type': 'png',
+    'created_at': '2020-02-01T13:31:37+0000',
+    'ocr': {
+        'locale': 'ja',
+        'description': 'OCRの結果が\n入ってる',
+    }
+}
+image_4_dict_with_none = {
+    'image_id': '14aa1dedcbafaa069943c3cf0631d5e5',
+    'permalink_url': None,
+    'thumb_url': None,
+    'type': 'png',
+    'created_at': '2020-02-01T13:31:37.197+0000',
+    'comments': [],
+    'ocr': {
+        'locale': 'ja',
+        'description': 'OCRの結果が\n入ってる',
+    }
+}
 
 test_data_from_dict = [
     (image_1_dict, image_1),
     (image_2_dict, image_2),
     (image_2_dict_empty_str, image_2),
+    (image_4_dict_with_none, image_4),
 ]
 
 test_data_to_dict = [
     (image_1, image_1_dict),
     (image_2, image_2_dict),
     (image_2_empty_str, image_2_dict),
+    (image_4, image_4_dict)
 ]
 
 test_data_to_json = [

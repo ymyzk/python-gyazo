@@ -22,11 +22,13 @@ class Image:
         #: A permalink URL
         self.permalink_url = kwargs.get('permalink_url')  # type: Optional[str]
         #: A thumbnail URL
-        self.thumb_url = kwargs['thumb_url']  # type: str
+        self.thumb_url = kwargs.get('thumb_url')  # type: Optional[str]
         #: A type of the image
         self.type = kwargs['type']  # type: str
         #: An image URL
         self.url = kwargs.get('url')  # type: Optional[str]
+        #: Result of OCR
+        self.ocr = kwargs.get('ocr')  # type: Optional[Dict[str, str]]
 
     @staticmethod
     def from_dict(data: Mapping[str, Any]) -> 'Image':
@@ -37,6 +39,10 @@ class Image:
         kwargs = {}
         for k, v in data.items():
             if isinstance(v, str) and v == '':
+                continue
+            elif isinstance(v, list) and v == []:
+                continue
+            elif isinstance(v, dict) and v == {}:
                 continue
             elif k == 'created_at' and v:
                 kwargs[k] = dateutil.parser.parse(v)
@@ -84,16 +90,18 @@ class Image:
 
         :getter: Return an image filename if it exists
         """
-        if self.url:
-            return self.url.split('/')[-1]
-        return None
+        if self.url is None or self.url == '':
+            return None
+        return self.url.split('/')[-1]
 
     @property
-    def thumb_filename(self) -> str:
+    def thumb_filename(self) -> Optional[str]:
         """A thumbnail image filename
 
         :getter: Return a thumbnail filename
         """
+        if self.thumb_url is None or self.thumb_url == '':
+            return None
         return self.thumb_url.split('/')[-1]
 
     @property
@@ -117,7 +125,7 @@ class Image:
 
     def to_dict(self) -> Dict[str, Any]:
         """Return a dict representation of this instance"""
-        data = {}
+        data = {}  # type: Dict[str, Any]
 
         if self.created_at:
             data['created_at'] = self.created_at.strftime(
@@ -132,6 +140,8 @@ class Image:
             data['type'] = self.type
         if self.url:
             data['url'] = self.url
+        if self.ocr:
+            data['ocr'] = self.ocr
 
         return data
 
@@ -140,18 +150,20 @@ class Image:
 
         :raise GyazoError:
         """
-        if self.url:
-            try:
-                return requests.get(self.url).content
-            except requests.RequestException as e:
-                raise GyazoError(str(e))
-        return None
+        if self.url is None or self.url == '':
+            return None
+        try:
+            return requests.get(self.url).content
+        except requests.RequestException as e:
+            raise GyazoError(str(e))
 
-    def download_thumb(self) -> bytes:
+    def download_thumb(self) -> Optional[bytes]:
         """Download a thumbnail image file
 
         :raise GyazoError:
         """
+        if self.thumb_url is None or self.thumb_url == '':
+            return None
         try:
             return requests.get(self.thumb_url).content
         except requests.RequestException as e:
