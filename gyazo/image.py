@@ -1,9 +1,8 @@
-from copy import deepcopy
 from datetime import datetime
 import json
 import math
 from typing import (Any, Dict, Iterable, Iterator, List, Mapping,
-                    MutableMapping, Optional, Union)
+                    Optional, Union)
 
 import dateutil.parser
 import dateutil.tz
@@ -30,22 +29,30 @@ class Image:
         self.url = kwargs.get('url')  # type: Optional[str]
 
     @staticmethod
-    def from_dict(data: MutableMapping[str, Any]) -> 'Image':
+    def from_dict(data: Mapping[str, Any]) -> 'Image':
         """Create a new instance from dict
 
         :param data: A JSON dict
         """
-        data = deepcopy(data)
+        kwargs = {}
+        for k, v in data.items():
+            if isinstance(v, str) and v == '':
+                continue
+            elif k == 'created_at' and v:
+                kwargs[k] = dateutil.parser.parse(v)
+            else:
+                kwargs[k] = v
 
-        created_at = data.get('created_at', None)
-        if created_at is not None:
-            data['created_at'] = dateutil.parser.parse(created_at)
-
-        return Image(**data)
+        return Image(**kwargs)
 
     def __str__(self) -> str:
         """Return a string representation of this instance"""
         return self.to_json()
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Image):
+            return NotImplemented
+        return self.__dict__ == other.__dict__
 
     def __or__(self, other: 'Image') -> 'Image':
         if not isinstance(other, Image):
@@ -157,7 +164,7 @@ class ImageList:
     def __init__(self, **kwargs: Any) -> None:
         #: The number of images
         self.total_count = kwargs.get('total_count')  # type: Optional[int]
-        #: Current page number
+        #: Current page number (1-index)
         self.current_page = kwargs.get('current_page')  # type: Optional[int]
         #: The number of images per page
         self.per_page = kwargs.get('per_page')  # type: Optional[int]
@@ -198,6 +205,7 @@ class ImageList:
         else:
             return None
 
+    @property
     def has_next_page(self) -> Optional[bool]:
         """Whether there is a next page or not
 
@@ -209,17 +217,18 @@ class ImageList:
                 and self.per_page is not None
         ):
             num_pages = math.ceil(self.total_count / self.per_page)
-            return self.current_page < num_pages
+            return 0 < self.current_page < num_pages
         else:
             return None
 
+    @property
     def has_previous_page(self) -> Optional[bool]:
         """Whether there is a previous page or not
 
         :getter: Return true if there is a previous page
         """
         if self.current_page is not None:
-            return 0 < self.current_page
+            return 1 < self.current_page
         else:
             return None
 
@@ -233,11 +242,11 @@ class ImageList:
         per_page = headers.get('x-per-page', None)
         self.user_type = headers.get('x-user-type', None)
 
-        if self.total_count:
+        if total_count:
             self.total_count = int(str(total_count))
-        if self.current_page:
+        if current_page:
             self.current_page = int(str(current_page))
-        if self.per_page:
+        if per_page:
             self.per_page = int(str(per_page))
 
     def to_json(self,
@@ -253,7 +262,7 @@ class ImageList:
                           indent=indent, sort_keys=sort_keys)
 
     @staticmethod
-    def from_list(data: Iterable[MutableMapping[str, Any]]) -> 'ImageList':
+    def from_list(data: Iterable[Mapping[str, Any]]) -> 'ImageList':
         """Create a new instance from list
 
         :param data: A JSON list

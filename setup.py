@@ -31,6 +31,9 @@ extras_require = {
         'coverage>=5,<6',
         'coveralls>=1.1,<2.0',
         'flake8>=3.3,<4',
+        'pytest>=5,<6',
+        'pytest-cov>=2,<3',
+        'pytest-mock>=2,<3',
     ],
 }
 
