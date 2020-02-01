@@ -50,6 +50,16 @@ class Api:
         images.set_attributes_from_headers(headers)
         return images
 
+    def get_image(self, image_id: str) -> Image:
+        """Get an image
+
+        :param image_id: Image ID
+        """
+        url = self.api_url + '/api/images/' + image_id
+        response = self._request_url(url, 'get', with_access_token=True)
+        headers, result = self._parse_and_check(response)
+        return Image.from_dict(result)
+
     def upload_image(self,
                      image_file: BinaryIO,
                      referer_url: Optional[str] = None,
