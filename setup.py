@@ -15,22 +15,22 @@ package_data = {
 }
 
 install_requires = [
-    'python-dateutil>=2.4.2',
-    'requests>=2.7.0',
+    'python-dateutil>=2.4',
+    'requests>=2.7',
 ]
 
 extras_require = {
     'docs': [
-        'Sphinx>=1.8,<2',
-        'sphinx_rtd_theme>=0.3.0,<0.4',
+        'Sphinx>=2.3,<3',
+        'sphinx_rtd_theme>=0.4,<1',
     ],
     'mypy': [
         'mypy',
     ],
     'test': [
-        'coverage>=4.3.4,<5.0.0',
+        'coverage>=5,<6',
         'coveralls>=1.1,<2.0',
-        'flake8>=3.3.0,<4.0.0',
+        'flake8>=3.3,<4',
     ],
 }
 
