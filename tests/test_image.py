@@ -72,6 +72,22 @@ image_4 = Image(
         'description': 'OCRの結果が\n入ってる',
     },
 )
+image_4_with_url = Image(
+    url='https://i.gyazo.com/14aa1dedcbafaa069943c3cf0631d5e5.png',
+    image_id='14aa1dedcbafaa069943c3cf0631d5e5',
+    type='png',
+    created_at=datetime(2020, 2, 1, 13, 31, 37, 197000, tzinfo=timezone.utc),
+)
+image_4_merged = Image(
+    url='https://i.gyazo.com/14aa1dedcbafaa069943c3cf0631d5e5.png',
+    image_id='14aa1dedcbafaa069943c3cf0631d5e5',
+    type='png',
+    created_at=datetime(2020, 2, 1, 13, 31, 37, 197000, tzinfo=timezone.utc),
+    ocr={
+        'locale': 'ja',
+        'description': 'OCRの結果が\n入ってる',
+    },
+)
 image_4_dict = {
     'image_id': '14aa1dedcbafaa069943c3cf0631d5e5',
     'type': 'png',
@@ -138,6 +154,11 @@ test_data_filenames = [
     ),
 ]
 
+test_data_or = [
+    (image_3_partial, image_3, image_3),
+    (image_3, image_3_partial, image_3),
+    (image_4, image_4_with_url, image_4_merged),
+]
 
 class TestImage:
     @pytest.mark.parametrize("d,image", test_data_from_dict)
@@ -157,8 +178,9 @@ class TestImage:
     def test_to_json(self, image, expected):
         assert image.to_json() == expected
 
-    def test_or(self):
-        assert image_3_partial | image_3 == image_3
+    @pytest.mark.parametrize("a,b,expected", test_data_or)
+    def test_or(self, a, b, expected):
+        assert a | b == expected
 
 
 class TestImageList:

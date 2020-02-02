@@ -70,17 +70,19 @@ class Image:
             'permalink_url',
             'thumb_url',
             'type',
-            'url'
+            'url',
         )
 
         kwargs = {}
         for attr in attrs:
             attr1 = getattr(self, attr, "")
             attr2 = getattr(other, attr, "")
-            if attr1 != "":
+            if attr1 is not None and attr1 != "":
                 kwargs[attr] = attr1
-            elif attr2 != "":
+            elif attr2 is not None and attr2 != "":
                 kwargs[attr] = attr2
+        if self.ocr is not None or other.ocr is not None:
+            kwargs["ocr"] = {**(other.ocr or {}), **(self.ocr or {})}
 
         return Image(**kwargs)
 
