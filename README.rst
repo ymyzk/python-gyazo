@@ -6,9 +6,9 @@ python-gyazo
 .. image:: https://img.shields.io/pypi/pyversions/python-gyazo.svg
    :target: https://pypi.python.org/pypi/python-gyazo/
    :alt: PyPI Python versions
-.. image:: https://travis-ci.org/ymyzk/python-gyazo.svg?branch=master
-   :target: https://travis-ci.org/ymyzk/python-gyazo
-   :alt: Build Status
+.. image:: https://github.com/ymyzk/python-gyazo/workflows/CI/badge.svg
+   :target: https://github.com/ymyzk/python-gyazo/actions?query=workflow%3ACI
+   :alt: CI Status
 .. image:: https://readthedocs.org/projects/python-gyazo/badge/?version=latest
    :target: https://python-gyazo.readthedocs.io/
    :alt: Documentation Status
